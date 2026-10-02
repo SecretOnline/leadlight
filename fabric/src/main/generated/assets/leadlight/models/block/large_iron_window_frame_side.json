@@ -1,0 +1,6 @@
+{
+  "parent": "leadlight:block/template_large_side_window_frame",
+  "textures": {
+    "texture": "leadlight:item/iron_frame"
+  }
+}

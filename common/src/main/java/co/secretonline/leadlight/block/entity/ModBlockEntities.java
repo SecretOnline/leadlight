@@ -4,6 +4,7 @@ import co.secretonline.leadlight.Leadlight;
 import co.secretonline.leadlight.block.ModBlocks;
 import co.secretonline.leadlight.platform.ServerServiceLoader;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
@@ -13,7 +14,7 @@ public class ModBlockEntities {
 		BuiltInRegistries.BLOCK_ENTITY_TYPE,
 		Leadlight.id("window_frame"),
 		() -> ServerServiceLoader.PLATFORM_REGISTRATION
-			.createBlockEntityType(WindowFrameBlockEntity::new, ModBlocks.IRON_WINDOW_FRAME_BLOCK.get()));
+			.createBlockEntityType(WindowFrameBlockEntity::new, ModBlocks.ALL_FRAME_BLOCKS.get().toArray(Block[]::new)));
 
 	public static void initialize() {
 	}

@@ -1,0 +1,77 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_post"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_side"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_side_alt"
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_side_alt",
+        "y": 90
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_no_side"
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_no_side_alt"
+      },
+      "when": {
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_no_side_alt",
+        "y": 90
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "leadlight:block/large_iron_window_frame_no_side",
+        "y": 270
+      },
+      "when": {
+        "west": "false"
+      }
+    }
+  ]
+}

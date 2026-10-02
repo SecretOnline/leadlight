@@ -1,6 +1,10 @@
 package co.secretonline.leadlight.block;
 
+import co.secretonline.leadlight.block.entity.WindowFrameBlockEntity;
+import co.secretonline.leadlight.data.FrameMaterial;
+import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.tag.ModBlockTags;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -11,6 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -23,11 +28,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class AbstractWindowFrame extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+	private MapCodec<WindowFrameBlock> CODEC;
+
 	public static final BooleanProperty NORTH = PipeBlock.NORTH;
 	public static final BooleanProperty EAST = PipeBlock.EAST;
 	public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -40,8 +48,13 @@ public abstract class AbstractWindowFrame extends BaseEntityBlock implements Sim
 		.collect(Util.toMap());
 	private final Function<BlockState, VoxelShape> shapes;
 
-	protected AbstractWindowFrame(Properties properties) {
+	private final FrameMaterial frameMaterial;
+	private final FrameShape frameShape;
+
+	protected WindowFrameBlock(FrameMaterial frameMaterial, FrameShape frameShape, Properties properties) {
 		super(properties);
+		this.frameMaterial = frameMaterial;
+		this.frameShape = frameShape;
 
 		this.shapes = this.makeShapes();
 	}
@@ -56,14 +69,14 @@ public abstract class AbstractWindowFrame extends BaseEntityBlock implements Sim
 	}
 
 	protected Function<BlockState, VoxelShape> makeShapes(
-		) {
+	) {
 		VoxelShape post = Block.column(2.f, 0.f, 16.f);
 		Map<Direction, VoxelShape> arms = Shapes.rotateHorizontal(Block.boxZ(2.f, 0.f, 16.f, 0.f, 8.f));
 		return this.getShapeForEachState(state -> {
 			VoxelShape shape = post;
 
 			for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
-				if ((Boolean)state.getValue((Property)entry.getValue())) {
+				if ((Boolean) state.getValue((Property) entry.getValue())) {
 					shape = Shapes.or(shape, arms.get(entry.getKey()));
 				}
 			}
@@ -72,9 +85,17 @@ public abstract class AbstractWindowFrame extends BaseEntityBlock implements Sim
 		}, WATERLOGGED);
 	}
 
+	public FrameMaterial getFrameMaterial() {
+		return frameMaterial;
+	}
+
+	public FrameShape getFrameShape() {
+		return frameShape;
+	}
+
 	@Override
 	protected boolean propagatesSkylightDown(final BlockState state) {
-		return !(Boolean)state.getValue(WATERLOGGED);
+		return !(Boolean) state.getValue(WATERLOGGED);
 	}
 
 	@Override
@@ -184,8 +205,8 @@ public abstract class AbstractWindowFrame extends BaseEntityBlock implements Sim
 				return true;
 			}
 
-			if ((Boolean)state.getValue((Property)PROPERTY_BY_DIRECTION.get(direction))
-				&& (Boolean)neighborState.getValue((Property)PROPERTY_BY_DIRECTION.get(direction.getOpposite()))) {
+			if ((Boolean) state.getValue((Property) PROPERTY_BY_DIRECTION.get(direction))
+				&& (Boolean) neighborState.getValue((Property) PROPERTY_BY_DIRECTION.get(direction.getOpposite()))) {
 				return true;
 			}
 		}
@@ -200,5 +221,19 @@ public abstract class AbstractWindowFrame extends BaseEntityBlock implements Sim
 	@Override
 	protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED);
+	}
+
+	@Override
+	public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
+		return new WindowFrameBlockEntity(blockPos, blockState);
+	}
+
+	@Override
+	public @NonNull MapCodec<? extends BaseEntityBlock> codec() {
+		if (CODEC == null) {
+			CODEC = simpleCodec((properties) -> new WindowFrameBlock(frameMaterial, frameShape, properties));
+		}
+
+		return CODEC;
 	}
 }
