@@ -1,0 +1,85 @@
+name: Update Loom and Gradle Version
+run-name: "Update Minecraft Version (Loom: ${{ inputs.loom-version }}, Gradle: ${{ inputs.gradle-version }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      loom-version:
+        description: New Loom major version
+        required: true
+        type: string
+      moddevgradle-version:
+        description: New Mod Dev Gradle major version
+        required: true
+        type: string
+      gradle-version:
+        description: New Gradle version
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  update-loom-gradle:
+    name: Update Loom and Gradle Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Gradle
+        uses: SecretOnline/minecraft-actions/setup-mod-gradle@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+
+      - name: Update Gradle
+        env:
+          GRADLE_VERSION: ${{ inputs.gradle-version }}
+        run: |
+          ./gradlew wrapper --gradle-version=${GRADLE_VERSION}  --distribution-type=bin
+
+      - name: Update loaders
+        env:
+          LOOM_VERSION: ${{ inputs.loom-version }}
+          MODDEVGRADLE_VERSION: ${{ inputs.moddevgradle-version }}
+        run: |
+          sed -i -e "/id 'net.fabricmc.fabric-loom' version/ s/version '.*'/version '${LOOM_VERSION}-SNAPSHOT'/" build.gradle
+          sed -i -e "/id 'net.neoforged.moddev' version/ s/version '.*'/version '${MODDEVGRADLE_VERSION}'/" build.gradle
+
+      - name: Prepare PR body
+        run: |
+          touch pr-body.md
+          cat << "EOF_AiVMO7YIg1" >> pr-body.md
+          This PR contains automated updates from the update-loom-gradle-version workflow.
+
+          ## Remember to check!
+
+          - This update does not do any remapping.
+            - It may not compile.
+            - It may still crash at run time.
+
+          EOF_AiVMO7YIg1
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.CREATE_PR_PAT }}
+          commit-message: "Update to Loom ${{ inputs.loom-version }} and Gradle ${{ inputs.gradle-version }}"
+          branch: auto-update/loom-${{ inputs.loom-version }}
+          delete-branch: true
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          title: "[Auto] Update to Update to Loom ${{ inputs.loom-version }} and Gradle ${{ inputs.gradle-version }}"
+          body-path: pr-body.md
+          add-paths: |
+            build.gradle
+            gradlew
+            gradlew.bat
+            gradle/

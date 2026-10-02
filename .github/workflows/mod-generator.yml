@@ -1,0 +1,48 @@
+name: Mod generator
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "main"
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".node-version"
+          cache: "npm"
+          cache-dependency-path: misc/mod-generator
+
+      - name: Install
+        working-directory: misc/mod-generator
+        run: |
+          npm ci
+
+      - name: Svelte check
+        working-directory: misc/mod-generator
+        run: |
+          npm run check
+
+      - name: Build
+        working-directory: misc/mod-generator
+        run: |
+          npm run build

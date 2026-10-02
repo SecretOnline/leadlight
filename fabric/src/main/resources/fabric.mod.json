@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [
+    {
+      "name": "secret_online",
+      "contact": {
+        "homepage": "https://secretonline.co"
+      }
+    }
+  ],
+  "contributors": [],
+  "contact": {
+    "homepage": "https://secretonline.co/mods/leadlight",
+    "sources": "https://github.com/SecretOnline/leadlight",
+    "issues": "https://github.com/SecretOnline/leadlight/issues"
+  },
+  "license": "${license}",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "co.secretonline.leadlight.FabricLeadlight"
+    ],
+    "client": [
+      "co.secretonline.leadlight.FabricLeadlightClient"
+    ],
+    "fabric-datagen": [
+      "co.secretonline.leadlight.datagen.FabricLeadlightDataGenerator"
+    ]
+  },
+  "mixins": [
+    "leadlight.mixins.json"
+  ],
+  "depends": {
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/xnDeRSuk8r",
+        "modmenu.modrinth": "https://modrinth.com/mod/leadlight",
+        "modmenu.curseforge": "https://legacy.curseforge.com/minecraft/mc-mods/leadlight"
+      }
+    }
+  }
+}

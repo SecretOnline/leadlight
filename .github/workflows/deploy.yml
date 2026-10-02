@@ -1,0 +1,83 @@
+name: Release
+run-name: Release (${{ inputs.version }})
+
+on:
+  workflow_dispatch:
+    inputs:
+      is-release:
+        description: Publish release
+        required: true
+        type: boolean
+      version:
+        description: Mod version (e.g. 1.3.1+1.21)
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  release-build:
+    name: Release build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Gradle
+        uses: SecretOnline/minecraft-actions/setup-mod-gradle@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+
+      - name: Get deploy info
+        id: deploy-info
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          modrinth_project_id=$(grep '^modrinth_project_id=' gradle.properties | cut -d= -f2)
+          icon_url=$(curl -A "secret_online/mod-release (mc@secretonline.co)" "https://api.modrinth.com/v2/project/${modrinth_project_id}" | jq --raw-output ".icon_url")
+
+          echo "icon-url=$icon_url" >> "$GITHUB_OUTPUT"
+
+          # Also update the mod version in gradle
+          sed -i "s/^version=.*/version=${VERSION}/" gradle.properties
+
+      - name: Parse changelog
+        id: changelog
+        uses: release-flow/keep-a-changelog-action@74931dec7ecdbfc8e38ac9ae7e8dd84c08db2f32 # v3.0.0
+        with:
+          command: query
+          version: v${{ inputs.version }}
+          changelog: CHANGELOG.md
+
+      - name: Publish
+        env:
+          IS_RELEASE: ${{ inputs.is-release }}
+          RELEASE_NOTES: ${{ steps.changelog.outputs.release-notes }}
+          ICON_URL: ${{ steps.deploy-info.outputs.icon-url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: ./gradlew publishMods
+
+      - name: Upload Fabric build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: build-fabric
+          path: "fabric/build/libs/*.jar"
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: Upload Neoforge build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: build-neoforge
+          path: "neoforge/build/libs/*.jar"
+          include-hidden-files: true
+          if-no-files-found: error

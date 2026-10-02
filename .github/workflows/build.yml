@@ -1,0 +1,221 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "main"
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Gradle
+        uses: SecretOnline/minecraft-actions/setup-mod-gradle@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+
+      - name: Build
+        run: ./gradlew clean build
+
+      - name: Upload fabric artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: build-fabric
+          path: fabric/build/libs/
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: Upload neoforge artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: build-neoforge
+          path: neoforge/build/libs/
+          include-hidden-files: true
+          if-no-files-found: error
+
+  check-datagen:
+    name: Check data generation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Gradle
+        uses: SecretOnline/minecraft-actions/setup-mod-gradle@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+
+      - name: Clean
+        run: ./gradlew clean
+
+      - name: Run datagen
+        run: ./gradlew runDatagen runData
+
+      - name: Check changes
+        run: |
+          git diff --exit-code fabric/src/main/generated
+          git diff --exit-code neoforge/src/generated
+
+  get-test-matrix:
+    name: Get test matrix
+    runs-on: ubuntu-latest
+    outputs:
+      test-matrix: ${{ steps.get-test-matrix.outputs.test-matrix }}
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Get versions
+        id: get-test-matrix
+        uses: SecretOnline/minecraft-actions/get-test-matrix@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+
+  live-test:
+    name: Test (${{ matrix.loader }}, ${{ matrix.versions.minecraft-version }})
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - get-test-matrix
+    strategy:
+      matrix:
+        versions: ${{ fromJson(needs.get-test-matrix.outputs.test-matrix) }}
+        loader:
+          - fabric
+          - neoforge
+      fail-fast: false
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Install apt packages
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri mesa-utils imagemagick mesa-vulkan-drivers
+
+      - name: Setup Java ${{ matrix.versions.java-version }}
+        id: setup-java
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          java-version: ${{ matrix.versions.java-version }}
+          distribution: zulu
+
+      - name: Setup server
+        uses: SecretOnline/minecraft-actions/setup-mc-server@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+        with:
+          server-directory: server
+          minecraft-version: ${{ matrix.versions.minecraft-version }}
+          loader: ${{ matrix.loader }}
+          accept-eula: true
+
+      - name: Setup client
+        uses: SecretOnline/minecraft-actions/setup-mc-client@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+        with:
+          client-directory: client
+          minecraft-version: ${{ matrix.versions.minecraft-version }}
+          loader: ${{ matrix.loader }}
+
+      - name: Download mod build artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: build-${{ matrix.loader }}
+
+      - name: Install mod
+        run: |
+          mkdir -p server/mods
+          mkdir -p client/mods
+
+          mod_file=$(ls -1 | grep ".jar" | grep -Ev "\-(sources|shadow|javadoc).jar" | grep -v "\-dev")
+          cp $mod_file server/mods/
+          cp $mod_file client/mods/
+
+      - name: Install Fabric API
+        if: ${{ matrix.loader == 'fabric' }}
+        run: |
+          fabric_api_url=$(curl -sg -A "secret_online/accessible-step (mc@secretonline.co)" "https://api.modrinth.com/v2/project/P7dR8mSH/version" | jq -r "[.[] | select(.game_versions[] == \"${{ matrix.versions.minecraft-version }}\")][0].files[0].url")
+
+          wget -q -O server/mods/fabric-api.jar "$fabric_api_url"
+          cp server/mods/fabric-api.jar client/mods/fabric-api.jar
+
+          mkdir -p server/mods
+          mkdir -p client/mods
+
+      - name: Run server
+        uses: SecretOnline/minecraft-actions/run-mc-server@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+        with:
+          server-directory: server
+          log-file: server/server.log
+
+      - name: Run client
+        id: run-client
+        uses: SecretOnline/minecraft-actions/run-mc-client@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+        with:
+          client-directory: client
+          log-file: client/client.log
+          width: 854
+          height: 480
+          server-address: localhost:25565
+
+      - name: Wait for client to fully join
+        run: |
+          sleep 10
+
+      - name: Screenshot Minecraft client
+        id: screenshot
+        uses: SecretOnline/minecraft-actions/screenshot-mc-client@0fd737eebcd823495d466d6b6ce07cafdcb1fba4 # v2.2.0
+        with:
+          display: ${{ steps.run-client.outputs.display }}
+          xauthority: ${{ steps.run-client.outputs.xauthority }}
+          artifact-name: client-screenshot-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}
+          add-job-summary: "true"
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ !cancelled() }}
+        with:
+          name: test-logs-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}
+          path: |
+            client/client.log
+            client/logs/*
+            server/server.log
+            server/logs/*
+          retention-days: 7
+
+      - name: Add PR Comment
+        uses: mshick/add-pr-comment@ec328af66588ab8f77cdeb2c264f14aba45bbf59 # v3.12.0
+        if: github.event_name == 'pull_request'
+        with:
+          message-id: "test-screenshot-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}"
+          message: |
+            ## Test screenshot (${{ matrix.loader }}, ${{ matrix.versions.minecraft-version }})
+
+            ![client-screenshot-${{ matrix.loader }}-${{ matrix.versions.minecraft-version }}](${{ steps.screenshot.outputs.url }})
