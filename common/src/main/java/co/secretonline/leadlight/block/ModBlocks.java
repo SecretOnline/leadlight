@@ -16,41 +16,6 @@ import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-	private static final Identifier TINY_GARDEN_ID = Leadlight.id("tiny_garden");
-	public static final ResourceKey<Block> TINY_GARDEN_KEY = ResourceKey.create(Registries.BLOCK, TINY_GARDEN_ID);
-	public static final Supplier<Block> TINY_GARDEN_BLOCK = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.BLOCK,
-		TINY_GARDEN_ID,
-		() -> new TinyGardenBlock(BlockBehaviour.Properties.of()
-			.mapColor(MapColor.PLANT)
-			.noCollision()
-			.sound(SoundType.PINK_PETALS)
-			.pushReaction(PushReaction.DESTROY)
-			.randomTicks()
-			.setId(TINY_GARDEN_KEY)));
-	public static final Supplier<MapCodec<TinyGardenBlock>> TINY_GARDEN_TYPE = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.BLOCK_TYPE,
-		TINY_GARDEN_ID,
-		() -> TinyGardenBlock.CODEC);
-
-
-
-	private static final Identifier TINY_FLOWER_POT_ID = Leadlight.id("tiny_flower_pot");
-	public static final ResourceKey<Block> TINY_FLOWER_POT_KEY = ResourceKey.create(Registries.BLOCK, TINY_FLOWER_POT_ID);
-	public static final Supplier<Block> TINY_FLOWER_POT_BLOCK = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.BLOCK,
-		TINY_FLOWER_POT_ID,
-		() -> new TinyFlowerPotBlock(BlockBehaviour.Properties.of()
-			.instabreak()
-			.noOcclusion()
-			.pushReaction(PushReaction.DESTROY)
-			.randomTicks()
-			.setId(TINY_FLOWER_POT_KEY)));
-	public static final Supplier<MapCodec<TinyFlowerPotBlock>> TINY_FLOWER_POT_TYPE = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.BLOCK_TYPE,
-		TINY_FLOWER_POT_ID,
-		() -> TinyFlowerPotBlock.CODEC);
-
 	public static void initialize() {
 	}
 }

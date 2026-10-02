@@ -21,10 +21,10 @@ public class NeoForgePaneSectionModelHelper implements PaneSectionModelHelper {
 	@Override
 	public <T> void registerModel(@NonNull Identifier id, @NonNull T context) {
 		if (!(context instanceof ModelEvent.RegisterStandalone event)) {
-			throw new IllegalArgumentException("Tried to register flower models with incorrect context");
+			throw new IllegalArgumentException("Tried to register pane models with incorrect context");
 		}
 
-		StandaloneModelKey<BlockStateModel> standaloneModelKey = new StandaloneModelKey<>(new TinyFlowersModelDebugName(id));
+		StandaloneModelKey<BlockStateModel> standaloneModelKey = new StandaloneModelKey<>(new LeadlightModelDebugName(id));
 		event.register(standaloneModelKey, SimpleUnbakedStandaloneModel.blockStateModel(id));
 
 		knownModels.put(id, standaloneModelKey);
@@ -46,7 +46,7 @@ public class NeoForgePaneSectionModelHelper implements PaneSectionModelHelper {
 		return modelManager.getStandaloneModel(standaloneModelKey);
 	}
 
-	private record TinyFlowersModelDebugName(Identifier id) implements ModelDebugName {
+	private record LeadlightModelDebugName(Identifier id) implements ModelDebugName {
 		@Override
 		public @NonNull String debugName() {
 			return Leadlight.MOD_ID + ":ModelKey[" + id.toString() + "]";

@@ -15,31 +15,6 @@ import net.minecraft.world.item.component.DyedItemColor;
 import java.util.function.Supplier;
 
 public class ModItems {
-
-	public static final Identifier FLORISTS_SHEARS_ID = Leadlight.id("florists_shears");
-	public static final ResourceKey<Item> FLORISTS_SHEARS_KEY = ResourceKey.create(Registries.ITEM, FLORISTS_SHEARS_ID);
-	public static final Supplier<Item> FLORISTS_SHEARS_ITEM = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.ITEM,
-		FLORISTS_SHEARS_ID,
-		() -> new FloristsShearsItem(
-			new Item.Properties()
-				.setId(FLORISTS_SHEARS_KEY)
-				.stacksTo(1)
-				.durability(238)
-				.component(DataComponents.TOOL, ShearsItem.createToolProperties())
-				.component(DataComponents.DYED_COLOR,
-					new DyedItemColor(DyeColor.RED.getTextureDiffuseColor()))));
-
-	public static final Identifier TINY_FLOWER_ID = Leadlight.id("tiny_flower");
-	public static final ResourceKey<Item> TINY_FLOWER_KEY = ResourceKey.create(Registries.ITEM, TINY_FLOWER_ID);
-	public static final Supplier<Item> TINY_FLOWER_ITEM = ServerServiceLoader.REGISTRY.register(
-		BuiltInRegistries.ITEM,
-		TINY_FLOWER_ID,
-		() -> new TinyFlowerItem(
-			new Item.Properties()
-				.setId(TINY_FLOWER_KEY)
-				.useBlockDescriptionPrefix()));
-
 	public static void initialize() {
 	}
 }

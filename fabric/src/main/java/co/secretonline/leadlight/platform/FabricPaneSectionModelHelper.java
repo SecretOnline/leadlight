@@ -19,7 +19,7 @@ public class FabricPaneSectionModelHelper implements PaneSectionModelHelper {
 	@Override
 	public <T> void registerModel(@NonNull Identifier id, @NonNull T context) {
 		if (!(context instanceof ModelLoadingPlugin.Context pluginContext)) {
-			throw new IllegalArgumentException("Tried to register flower models with incorrect context");
+			throw new IllegalArgumentException("Tried to register pane models with incorrect context");
 		}
 
 		ExtraModelKey<BlockStateModel> extraModelKey = ExtraModelKey.create(id::toString);
