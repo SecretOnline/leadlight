@@ -3,6 +3,8 @@
   "package": "co.secretonline.leadlight.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "block.IronBarsBlockMixin",
+    "block.WallBlockMixin"
   ],
   "client": [
     "client.data.TextureSlotAccessor"
