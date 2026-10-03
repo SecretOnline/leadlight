@@ -35,11 +35,11 @@ public class ModModelTemplates {
 		}
 
 		private static ModelTemplate createItemTemplate(String shape) {
-			return new ModelTemplate(Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")), Optional.empty(), TextureSlot.TEXTURE);
+			return new ModelTemplate(Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")), Optional.empty(), ModTextureSlots.POST, ModTextureSlots.BAR);
 		}
 
 		private static ModelTemplate createTemplate(String shape, String part) {
-			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_" + part + "_window_frame")), Optional.of("_" + part), TextureSlot.TEXTURE);
+			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_window_frame" + "_" + part)), Optional.of("_" + part), ModTextureSlots.POST, ModTextureSlots.BAR);
 		}
 	}
 }

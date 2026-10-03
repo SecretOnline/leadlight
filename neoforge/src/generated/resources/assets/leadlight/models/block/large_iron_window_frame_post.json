@@ -1,6 +1,7 @@
 {
-  "parent": "leadlight:block/template_large_post_window_frame",
+  "parent": "leadlight:block/template_large_window_frame_post",
   "textures": {
-    "texture": "leadlight:item/iron_frame"
+    "bar": "leadlight:block/iron_window_frame_bar",
+    "post": "leadlight:block/iron_window_frame_post"
   }
 }
