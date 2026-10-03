@@ -9,6 +9,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -31,7 +33,8 @@ public class ModBlocks {
 
 	private static Supplier<WindowFrameBlock> registerWindowFrameBlock(FrameMaterial material, FrameShape shape) {
 		Identifier id = Leadlight.id(shape.getPrefix() + "_" + material.getPrefix() + "_window_frame");
-		ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, id);
+		ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
 
 		Supplier<WindowFrameBlock> block = ServerServiceLoader.REGISTRY.register(
 			BuiltInRegistries.BLOCK,
@@ -41,12 +44,17 @@ public class ModBlocks {
 				.strength(0.3F)
 				.sound(SoundType.IRON)
 				.noOcclusion()
-				.setId(key)));
+				.setId(blockKey)));
 
 		Supplier<MapCodec<? extends BaseEntityBlock>> mapCodec = ServerServiceLoader.REGISTRY.register(
 			BuiltInRegistries.BLOCK_TYPE,
 			id,
 			() -> block.get().codec());
+
+		Supplier<Item> item = ServerServiceLoader.REGISTRY.register(
+			BuiltInRegistries.ITEM,
+			id,
+			()-> new BlockItem(block.get(), new Item.Properties().useBlockDescriptionPrefix().setId(itemKey)));
 
 		return block;
 	}

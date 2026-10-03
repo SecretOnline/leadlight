@@ -44,7 +44,10 @@
         "model": "leadlight:block/large_iron_window_frame_no_side"
       },
       "when": {
-        "north": "false"
+        "east": "false",
+        "north": "false",
+        "south": "true",
+        "west": "false"
       }
     },
     {
@@ -52,7 +55,10 @@
         "model": "leadlight:block/large_iron_window_frame_no_side_alt"
       },
       "when": {
-        "east": "false"
+        "east": "false",
+        "north": "true",
+        "south": "false",
+        "west": "false"
       }
     },
     {
@@ -61,16 +67,22 @@
         "y": 90
       },
       "when": {
-        "south": "false"
+        "east": "true",
+        "north": "false",
+        "south": "false",
+        "west": "false"
       }
     },
     {
       "apply": {
         "model": "leadlight:block/large_iron_window_frame_no_side",
-        "y": 270
+        "y": 90
       },
       "when": {
-        "west": "false"
+        "east": "false",
+        "north": "false",
+        "south": "false",
+        "west": "true"
       }
     }
   ]
