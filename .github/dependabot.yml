@@ -12,7 +12,7 @@ updates:
     cooldown:
       default-days: 7
   - package-ecosystem: "npm"
-    directory: "/misc/mod-generator"
+    directory: "/"
     schedule:
       interval: "monthly"
       timezone: "Pacific/Auckland"

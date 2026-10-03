@@ -27,9 +27,9 @@ public class WindowFrameModelGenerator {
 	}
 
 	private void createWindowFrameBlock(final WindowFrameBlock block) {
-		BaseFrameModels models = switch (block.getFrameShape()) {
-			case LARGE -> new LargeFrameModels(blockStateOutput, itemModelOutput, modelOutput);
-		};
+		BaseFrameModels models = block.getFrameShape().getSegmentsSharedAtPost() > 0
+			? new OpenCenterFrameModels(blockStateOutput, itemModelOutput, modelOutput)
+			: new ClosedCenterFrameModels(blockStateOutput, itemModelOutput, modelOutput);
 
 		TextureMapping frameMapping = ModTextureMappings.ofMaterial(block.getFrameMaterial());
 

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "leadlight:block/square_iron_window_frame"
+  }
+}

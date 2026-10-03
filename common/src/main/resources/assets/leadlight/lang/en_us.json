@@ -1,5 +1,8 @@
 {
   "itemGroup.leadlight": "Leadlight",
   "modmenu.descriptionTranslation.leadlight": "Create ornate and decorative stained-glass windows.",
-  "block.leadlight.large_iron_window_frame": "Large Iron Window Frame"
+  "block.leadlight.large_iron_window_frame": "Large Iron Window Frame",
+  "block.leadlight.vertical_iron_window_frame": "Vertical Iron Window Frame",
+  "block.leadlight.horizontal_iron_window_frame": "Horizontal Iron Window Frame",
+  "block.leadlight.square_iron_window_frame": "Square Iron Window Frame"
 }

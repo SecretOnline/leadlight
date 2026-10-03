@@ -4,7 +4,10 @@ import net.minecraft.util.StringRepresentable;
 import org.jspecify.annotations.NonNull;
 
 public enum FrameShape implements StringRepresentable {
-	LARGE("large", 1, 1);
+	LARGE("large", 1, 1),
+	VERTICAL("vertical", 1, 0),
+	HORIZONTAL("horizontal", 2, 1),
+	SQUARE("square", 2, 0);
 
 	private final String prefix;
 	private final int segmentsPerSide;

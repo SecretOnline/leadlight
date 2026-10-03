@@ -45,8 +45,8 @@
       },
       "when": {
         "east": "false",
-        "north": "false",
-        "south": "true",
+        "north": "true",
+        "south": "false",
         "west": "false"
       }
     },
@@ -56,14 +56,14 @@
       },
       "when": {
         "east": "false",
-        "north": "true",
-        "south": "false",
+        "north": "false",
+        "south": "true",
         "west": "false"
       }
     },
     {
       "apply": {
-        "model": "leadlight:block/large_iron_window_frame_no_side_alt",
+        "model": "leadlight:block/large_iron_window_frame_no_side",
         "y": 90
       },
       "when": {
@@ -75,7 +75,7 @@
     },
     {
       "apply": {
-        "model": "leadlight:block/large_iron_window_frame_no_side",
+        "model": "leadlight:block/large_iron_window_frame_no_side_alt",
         "y": 90
       },
       "when": {

@@ -1,0 +1,7 @@
+{
+  "parent": "leadlight:block/template_vertical_window_frame_side_alt",
+  "textures": {
+    "bar": "leadlight:block/iron_window_frame_bar",
+    "post": "leadlight:block/iron_window_frame_post"
+  }
+}

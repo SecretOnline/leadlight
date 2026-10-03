@@ -9,10 +9,16 @@ import java.util.Optional;
 
 public class ModModelTemplates {
 	public static final ShapeModelTemplates LARGE = new ShapeModelTemplates(FrameShape.LARGE);
+	public static final ShapeModelTemplates VERTICAL = new ShapeModelTemplates(FrameShape.VERTICAL);
+	public static final ShapeModelTemplates HORIZONTAL = new ShapeModelTemplates(FrameShape.HORIZONTAL);
+	public static final ShapeModelTemplates SQUARE = new ShapeModelTemplates(FrameShape.SQUARE);
 
 	public static ShapeModelTemplates ofShape(FrameShape frameShape) {
 		return switch (frameShape) {
 			case LARGE -> LARGE;
+			case VERTICAL -> VERTICAL;
+			case HORIZONTAL -> HORIZONTAL;
+			case SQUARE -> SQUARE;
 		};
 	}
 
