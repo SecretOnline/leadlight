@@ -2,6 +2,8 @@ package co.secretonline.leadlight.item;
 
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class CutStainedGlassPaneItem extends Item {
 	private final DyeColor color;
@@ -14,5 +16,26 @@ public class CutStainedGlassPaneItem extends Item {
 
 	public DyeColor getColor() {
 		return color;
+	}
+
+	public Block getPaneBlock() {
+		return switch (color) {
+			case WHITE -> Blocks.WHITE_STAINED_GLASS_PANE;
+			case ORANGE -> Blocks.ORANGE_STAINED_GLASS_PANE;
+			case MAGENTA -> Blocks.MAGENTA_STAINED_GLASS_PANE;
+			case LIGHT_BLUE -> Blocks.LIGHT_BLUE_STAINED_GLASS_PANE;
+			case YELLOW -> Blocks.YELLOW_STAINED_GLASS_PANE;
+			case LIME -> Blocks.LIME_STAINED_GLASS_PANE;
+			case PINK -> Blocks.PINK_STAINED_GLASS_PANE;
+			case GRAY -> Blocks.GRAY_STAINED_GLASS_PANE;
+			case LIGHT_GRAY -> Blocks.LIGHT_GRAY_STAINED_GLASS_PANE;
+			case CYAN -> Blocks.CYAN_STAINED_GLASS_PANE;
+			case PURPLE -> Blocks.PURPLE_STAINED_GLASS_PANE;
+			case BLUE -> Blocks.BLUE_STAINED_GLASS_PANE;
+			case BROWN -> Blocks.BROWN_STAINED_GLASS_PANE;
+			case GREEN -> Blocks.GREEN_STAINED_GLASS_PANE;
+			case RED -> Blocks.RED_STAINED_GLASS_PANE;
+			case BLACK -> Blocks.BLACK_STAINED_GLASS_PANE;
+		};
 	}
 }

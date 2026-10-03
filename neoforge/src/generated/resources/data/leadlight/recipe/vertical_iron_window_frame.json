@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "f": "leadlight:large_iron_window_frame",
+    "m": "minecraft:iron_nugget"
+  },
+  "pattern": [
+    "m",
+    "f",
+    "m"
+  ],
+  "result": {
+    "id": "leadlight:vertical_iron_window_frame"
+  }
+}
