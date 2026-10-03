@@ -10,5 +10,6 @@ public class FabricLeadlightDataGenerator implements DataGeneratorEntrypoint {
 
 		pack.addProvider(FabricDefaultModelProvider::new);
 		pack.addProvider(FabricBlockTagProvider::new);
+		pack.addProvider(FabricItemTagProvider::new);
 	}
 }

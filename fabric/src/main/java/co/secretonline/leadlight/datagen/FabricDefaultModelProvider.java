@@ -1,5 +1,6 @@
 package co.secretonline.leadlight.datagen;
 
+import co.secretonline.leadlight.datagen.models.CutStainedGlassPaneItemModelGenerator;
 import co.secretonline.leadlight.datagen.models.WindowFrameModelGenerator;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -14,14 +15,15 @@ public class FabricDefaultModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
-		WindowFrameModelGenerator generator = new WindowFrameModelGenerator(
+		WindowFrameModelGenerator frameModelGenerator = new WindowFrameModelGenerator(
 			blockModelGenerators.blockStateOutput, blockModelGenerators.itemModelOutput, blockModelGenerators.modelOutput);
-
-		generator.generateBlockStateModels();
+		frameModelGenerator.generateBlockStateModels();
 	}
 
 	@Override
 	public void generateItemModels(@NonNull ItemModelGenerators itemModelGenerators) {
+		CutStainedGlassPaneItemModelGenerator glassModelGenerator = new CutStainedGlassPaneItemModelGenerator(itemModelGenerators.itemModelOutput, itemModelGenerators.modelOutput);
+		glassModelGenerator.generateItemModels();
 	}
 
 	@Override

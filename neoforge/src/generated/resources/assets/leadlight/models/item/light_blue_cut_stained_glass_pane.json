@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "leadlight:item/light_blue_cut_stained_glass_pane"
+  }
+}

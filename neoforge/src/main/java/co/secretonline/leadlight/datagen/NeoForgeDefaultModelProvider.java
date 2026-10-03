@@ -1,6 +1,7 @@
 package co.secretonline.leadlight.datagen;
 
 import co.secretonline.leadlight.Leadlight;
+import co.secretonline.leadlight.datagen.models.CutStainedGlassPaneItemModelGenerator;
 import co.secretonline.leadlight.datagen.models.WindowFrameModelGenerator;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -21,12 +22,13 @@ public class NeoForgeDefaultModelProvider extends ModelProvider {
 
 
 	public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
-		WindowFrameModelGenerator generator = new WindowFrameModelGenerator(
+		WindowFrameModelGenerator frameModelGenerator = new WindowFrameModelGenerator(
 			blockModelGenerators.blockStateOutput, blockModelGenerators.itemModelOutput, blockModelGenerators.modelOutput);
-
-		generator.generateBlockStateModels();
+		frameModelGenerator.generateBlockStateModels();
 	}
 
-	public void generateItemModels(ItemModelGenerators itemModelGenerators) {
+	public void generateItemModels(@NonNull ItemModelGenerators itemModelGenerators) {
+		CutStainedGlassPaneItemModelGenerator glassModelGenerator = new CutStainedGlassPaneItemModelGenerator(itemModelGenerators.itemModelOutput, itemModelGenerators.modelOutput);
+		glassModelGenerator.generateItemModels();
 	}
 }

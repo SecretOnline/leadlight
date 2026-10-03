@@ -10,7 +10,8 @@ public class NeoForgeTinyFlowersDataGenerator {
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent.Client event) {
-		event.createProvider(NeoForgeBlockTagProvider::new);
 		event.createProvider(NeoForgeDefaultModelProvider::new);
+		event.createProvider(NeoForgeBlockTagProvider::new);
+		event.createProvider(NeoForgeItemTagProvider::new);
 	}
 }

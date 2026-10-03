@@ -4,5 +4,21 @@
   "block.leadlight.large_iron_window_frame": "Large Iron Window Frame",
   "block.leadlight.vertical_iron_window_frame": "Vertical Iron Window Frame",
   "block.leadlight.horizontal_iron_window_frame": "Horizontal Iron Window Frame",
-  "block.leadlight.square_iron_window_frame": "Square Iron Window Frame"
+  "block.leadlight.square_iron_window_frame": "Square Iron Window Frame",
+  "block.leadlight.white_cut_stained_glass_pane": "White Cut Stained Glass Pane",
+  "block.leadlight.orange_cut_stained_glass_pane": "Orange Cut Stained Glass Pane",
+  "block.leadlight.magenta_cut_stained_glass_pane": "Magenta Cut Stained Glass Pane",
+  "block.leadlight.light_blue_cut_stained_glass_pane": "Light Blue Cut Stained Glass Pane",
+  "block.leadlight.yellow_cut_stained_glass_pane": "Yellow Cut Stained Glass Pane",
+  "block.leadlight.lime_cut_stained_glass_pane": "Lime Cut Stained Glass Pane",
+  "block.leadlight.pink_cut_stained_glass_pane": "Pink Cut Stained Glass Pane",
+  "block.leadlight.gray_cut_stained_glass_pane": "Gray Cut Stained Glass Pane",
+  "block.leadlight.light_gray_cut_stained_glass_pane": "Light Gray Cut Stained Glass Pane",
+  "block.leadlight.cyan_cut_stained_glass_pane": "Cyan Cut Stained Glass Pane",
+  "block.leadlight.purple_cut_stained_glass_pane": "Purple Cut Stained Glass Pane",
+  "block.leadlight.blue_cut_stained_glass_pane": "Blue Cut Stained Glass Pane",
+  "block.leadlight.brown_cut_stained_glass_pane": "Brown Cut Stained Glass Pane",
+  "block.leadlight.green_cut_stained_glass_pane": "Green Cut Stained Glass Pane",
+  "block.leadlight.red_cut_stained_glass_pane": "Red Cut Stained Glass Pane",
+  "block.leadlight.black_cut_stained_glass_pane": "Black Cut Stained Glass Pane"
 }

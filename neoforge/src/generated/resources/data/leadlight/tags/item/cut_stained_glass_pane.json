@@ -1,0 +1,20 @@
+{
+  "values": [
+    "leadlight:white_cut_stained_glass_pane",
+    "leadlight:orange_cut_stained_glass_pane",
+    "leadlight:magenta_cut_stained_glass_pane",
+    "leadlight:light_blue_cut_stained_glass_pane",
+    "leadlight:yellow_cut_stained_glass_pane",
+    "leadlight:lime_cut_stained_glass_pane",
+    "leadlight:pink_cut_stained_glass_pane",
+    "leadlight:gray_cut_stained_glass_pane",
+    "leadlight:light_gray_cut_stained_glass_pane",
+    "leadlight:cyan_cut_stained_glass_pane",
+    "leadlight:purple_cut_stained_glass_pane",
+    "leadlight:blue_cut_stained_glass_pane",
+    "leadlight:brown_cut_stained_glass_pane",
+    "leadlight:green_cut_stained_glass_pane",
+    "leadlight:red_cut_stained_glass_pane",
+    "leadlight:black_cut_stained_glass_pane"
+  ]
+}

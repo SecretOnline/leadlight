@@ -29,6 +29,7 @@ public class ModCreativeModeTabs {
 			.build());
 
 	public static void addItems(Consumer<ItemLike> consumer) {
+		ModItems.ALL_CUT_STAINED_GLASS_PANE_ITEMS.get().forEach(consumer);
 		ModBlocks.ALL_FRAME_BLOCKS.get().forEach(consumer);
 	}
 
