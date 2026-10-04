@@ -1,8 +1,10 @@
 package co.secretonline.leadlight.block;
 
 import co.secretonline.leadlight.block.entity.WindowFrameBlockEntity;
+import co.secretonline.leadlight.component.WindowFrameContentsComponent;
 import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
+import co.secretonline.leadlight.item.CutStainedGlassPaneItem;
 import co.secretonline.leadlight.tag.ModBlockTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -10,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -24,12 +27,16 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -91,6 +98,52 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 
 	public FrameShape getFrameShape() {
 		return frameShape;
+	}
+
+	@Override
+	protected @NonNull List<ItemStack> getDrops(@NonNull BlockState state, LootParams.@NonNull Builder params) {
+		List<ItemStack> baseDrops = super.getDrops(state, params);
+
+		BlockEntity blockEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (!(blockEntity instanceof WindowFrameBlockEntity windowFrameBlockEntity)) {
+			return baseDrops;
+		}
+
+		WindowFrameContentsComponent contents = windowFrameBlockEntity.getState();
+		List<ItemStack> drops = new ArrayList<>(baseDrops);
+
+		if (contents.centerTop().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.centerTop().get())));
+		}
+		if (contents.centerBottom().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.centerBottom().get())));
+		}
+		if (contents.northTop().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.northTop().get())));
+		}
+		if (contents.northBottom().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.northBottom().get())));
+		}
+		if (contents.eastTop().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.eastTop().get())));
+		}
+		if (contents.eastBottom().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.eastBottom().get())));
+		}
+		if (contents.southTop().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.southTop().get())));
+		}
+		if (contents.southBottom().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.southBottom().get())));
+		}
+		if (contents.westTop().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.westTop().get())));
+		}
+		if (contents.westBottom().isPresent()) {
+			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.westBottom().get())));
+		}
+
+		return drops;
 	}
 
 	@Override
