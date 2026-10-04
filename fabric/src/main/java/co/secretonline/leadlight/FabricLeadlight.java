@@ -3,7 +3,7 @@ package co.secretonline.leadlight;
 import co.secretonline.leadlight.block.entity.ModBlockEntities;
 import co.secretonline.leadlight.block.ModBlocks;
 import co.secretonline.leadlight.item.ModCreativeModeTabs;
-import co.secretonline.leadlight.item.component.ModComponents;
+import co.secretonline.leadlight.component.ModComponents;
 import co.secretonline.leadlight.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 

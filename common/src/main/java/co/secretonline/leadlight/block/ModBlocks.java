@@ -1,6 +1,8 @@
 package co.secretonline.leadlight.block;
 
 import co.secretonline.leadlight.Leadlight;
+import co.secretonline.leadlight.component.ModComponents;
+import co.secretonline.leadlight.component.WindowFrameContentsComponent;
 import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.platform.ServerServiceLoader;
@@ -60,7 +62,10 @@ public class ModBlocks {
 		Supplier<Item> item = ServerServiceLoader.REGISTRY.register(
 			BuiltInRegistries.ITEM,
 			id,
-			()-> new BlockItem(block.get(), new Item.Properties().useBlockDescriptionPrefix().setId(itemKey)));
+			()-> new BlockItem(block.get(), new Item.Properties()
+				.useBlockDescriptionPrefix()
+				.component(ModComponents.WINDOW_FRAME_CONTENTS.get(), WindowFrameContentsComponent.empty())
+				.setId(itemKey)));
 
 		return block;
 	}

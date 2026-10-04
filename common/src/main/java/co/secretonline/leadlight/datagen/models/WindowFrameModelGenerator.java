@@ -2,6 +2,7 @@ package co.secretonline.leadlight.datagen.models;
 
 import co.secretonline.leadlight.block.WindowFrameBlock;
 import co.secretonline.leadlight.block.ModBlocks;
+import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.data.models.ModTextureMappings;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
@@ -27,7 +28,8 @@ public class WindowFrameModelGenerator {
 	}
 
 	private void createWindowFrameBlock(final WindowFrameBlock block) {
-		BaseFrameModels models = block.getFrameShape().getSegmentsSharedAtPost() > 0
+		FrameShape shape = block.getFrameShape();
+		BaseFrameModels models = (shape.hasCenterTopSlot() || shape.hasCenterBottomSlot())
 			? new OpenCenterFrameModels(blockStateOutput, itemModelOutput, modelOutput)
 			: new ClosedCenterFrameModels(blockStateOutput, itemModelOutput, modelOutput);
 

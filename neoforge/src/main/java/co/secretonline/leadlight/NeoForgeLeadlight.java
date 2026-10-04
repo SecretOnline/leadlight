@@ -4,7 +4,7 @@ import co.secretonline.leadlight.block.ModBlocks;
 import co.secretonline.leadlight.block.entity.ModBlockEntities;
 import co.secretonline.leadlight.item.ModCreativeModeTabs;
 import co.secretonline.leadlight.item.ModItems;
-import co.secretonline.leadlight.item.component.ModComponents;
+import co.secretonline.leadlight.component.ModComponents;
 import co.secretonline.leadlight.platform.NeoForgeRegistryHelper;
 import co.secretonline.leadlight.platform.ServerServiceLoader;
 import net.neoforged.bus.api.IEventBus;

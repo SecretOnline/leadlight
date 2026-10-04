@@ -120,6 +120,8 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 
 	@Override
 	protected @NonNull BlockState rotate(final @NonNull BlockState state, final Rotation rotation) {
+		// TODO: Update block state
+
 		return switch (rotation) {
 			case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH))
 				.setValue(EAST, state.getValue(WEST))

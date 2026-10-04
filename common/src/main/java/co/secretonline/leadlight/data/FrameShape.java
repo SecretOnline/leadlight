@@ -4,31 +4,43 @@ import net.minecraft.util.StringRepresentable;
 import org.jspecify.annotations.NonNull;
 
 public enum FrameShape implements StringRepresentable {
-	LARGE("large", 1, 1),
-	VERTICAL("vertical", 1, 0),
-	HORIZONTAL("horizontal", 2, 1),
-	SQUARE("square", 2, 0);
+	LARGE("large", true, false, false, false),
+	VERTICAL("vertical", false, false, true, true),
+	HORIZONTAL("horizontal", true, true, false, false),
+	SQUARE("square", false, false, true, true);
 
 	private final String prefix;
-	private final int segmentsPerSide;
-	private final int segmentsSharedAtPost;
+	private final boolean hasCenterTopSlot;
+	private final boolean hasCenterBottomSlot;
+	private final boolean hasSideTopSlot;
+	private final boolean hasSideBottomSlot;
 
-	FrameShape(String prefix, int segmentsPerSide, int segmentsSharedAtPost) {
+	FrameShape(String prefix, boolean hasCenterTopSlot, boolean hasCenterBottomSlot, boolean hasSideTopSlot, boolean hasSideBottomSlot) {
 		this.prefix = prefix;
-		this.segmentsPerSide = segmentsPerSide;
-		this.segmentsSharedAtPost = segmentsSharedAtPost;
+		this.hasCenterTopSlot = hasCenterTopSlot;
+		this.hasCenterBottomSlot = hasCenterBottomSlot;
+		this.hasSideTopSlot = hasSideTopSlot;
+		this.hasSideBottomSlot = hasSideBottomSlot;
 	}
 
 	public String getPrefix() {
 		return prefix;
 	}
 
-	public int getSegmentsPerSide() {
-		return segmentsPerSide;
+	public boolean hasCenterTopSlot() {
+		return hasCenterTopSlot;
 	}
 
-	public int getSegmentsSharedAtPost() {
-		return segmentsSharedAtPost;
+	public boolean hasCenterBottomSlot() {
+		return hasCenterBottomSlot;
+	}
+
+	public boolean hasSideTopSlot() {
+		return hasSideTopSlot;
+	}
+
+	public boolean hasSideBottomSlot() {
+		return hasSideBottomSlot;
 	}
 
 	@Override
