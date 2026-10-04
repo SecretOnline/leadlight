@@ -81,16 +81,14 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 
 		DirectionCollector collector = switch (renderState.frameShape) {
 			case LARGE -> WindowFrameBlockEntityRenderer::collectLargeFrameVertexData;
-			case VERTICAL -> null;
-			case HORIZONTAL -> null;
-			case SQUARE -> null;
+			case VERTICAL -> WindowFrameBlockEntityRenderer::collectVerticalFrameVertexData;
+			case HORIZONTAL -> WindowFrameBlockEntityRenderer::collectHorizontalFrameVertexData;
+			case SQUARE -> WindowFrameBlockEntityRenderer::collectSquareFrameVertexData;
 		};
 
-		if (collector != null) {
-			for (Direction direction : HORIZONTAL_DIRECTIONS) {
-				if (renderState.connections.has(direction)) {
-					collector.collect(direction, renderState, vertexDataBiConsumer);
-				}
+		for (Direction direction : HORIZONTAL_DIRECTIONS) {
+			if (renderState.connections.has(direction)) {
+				collector.collect(direction, renderState, vertexDataBiConsumer);
 			}
 		}
 
@@ -107,20 +105,78 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		}
 	}
 
-
 	private static void collectLargeFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
 		Optional<DyeColor> colorOptional = renderState.windowFrameContents.centerTop();
-		if (colorOptional.isEmpty()) {
-			return;
+		if (colorOptional.isPresent()) {
+			DyeColor color = colorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectOpenCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.FULL_STANDARD, WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE, WindowVertexData.VERTICAL_LEFT_OUTSIDE,
+				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_OUTSIDE_OPPOSITE);
+		}
+	}
+
+	private static void collectVerticalFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> colorOptional = renderState.windowFrameContents.sideTop(direction);
+		if (colorOptional.isPresent()) {
+			DyeColor color = colorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectClosedCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE,
+				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE);
+		}
+	}
+
+	private static void collectHorizontalFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> topColorOptional = renderState.windowFrameContents.centerTop();
+		if (topColorOptional.isPresent()) {
+			DyeColor color = topColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectOpenCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.HORIZONTAL_TOP_FULL, WindowVertexData.SQUARE_TOP_LEFT_STANDARD, WindowVertexData.SQUARE_TOP_LEFT_INSIDE, WindowVertexData.SQUARE_TOP_LEFT_OUTSIDE,
+				WindowVertexData.SQUARE_TOP_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_TOP_RIGHT_INSIDE_OPPOSITE, WindowVertexData.SQUARE_TOP_RIGHT_OUTSIDE_OPPOSITE);
 		}
 
-		DyeColor color = colorOptional.get();
+		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.centerBottom();
+		if (bottomColorOptional.isPresent()) {
+			DyeColor color = bottomColorOptional.get();
 
-		Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
-		collectOpenCenter(renderState.connections, direction, vertexConsumer,
-			WindowVertexData.FULL_STANDARD, WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE, WindowVertexData.VERTICAL_LEFT_OUTSIDE,
-			WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_OUTSIDE_OPPOSITE);
+			collectOpenCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.HORIZONTAL_BOTTOM_FULL, WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD, WindowVertexData.SQUARE_BOTTOM_LEFT_INSIDE, WindowVertexData.SQUARE_BOTTOM_LEFT_OUTSIDE,
+				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_OUTSIDE_OPPOSITE);
+		}
+	}
+
+	private static void collectSquareFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> topColorOptional = renderState.windowFrameContents.sideTop(direction);
+		if (topColorOptional.isPresent()) {
+			DyeColor color = topColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectClosedCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.SQUARE_TOP_LEFT_STANDARD, WindowVertexData.SQUARE_TOP_LEFT_INSIDE,
+				WindowVertexData.SQUARE_TOP_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_TOP_RIGHT_INSIDE_OPPOSITE);
+		}
+
+		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.sideBottom(direction);
+		if (bottomColorOptional.isPresent()) {
+			DyeColor color = bottomColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectClosedCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD, WindowVertexData.SQUARE_BOTTOM_LEFT_INSIDE,
+				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE);
+		}
 	}
 
 	private static void collectOpenCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
@@ -153,37 +209,29 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		}
 	}
 
-	private static void collectGeneric(@NonNull DyeColor color, boolean isOpenCenter, @NonNull ConnectionInfo connectionState, @NonNull Direction direction, @NonNull BiConsumer<DyeColor, WindowVertexData> output,
-																		 WindowVertexData frontStandard, WindowVertexData frontInner, WindowVertexData frontOuter,
-																		 WindowVertexData backStandard, WindowVertexData backInner, WindowVertexData backOuter) {
-
+	private static void collectClosedCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
+																					WindowVertexData frontHalf, WindowVertexData frontInner,
+																					WindowVertexData backHalf, WindowVertexData backInner) {
 		Direction front = direction.getCounterClockWise();
 		Direction opposite = direction.getOpposite();
 		Direction back = direction.getClockWise();
 
 		// Front faces
-		if (connectionState.has(front)) {
-			output.accept(color, frontInner.withDirection(direction));
-		} else if (connectionState.has(opposite)) {
-			output.accept(color, frontStandard.withDirection(direction));
-		} else if (connectionState.has(back) && isOpenCenter) {
-			output.accept(color, frontOuter.withDirection(direction));
+		if (connections.has(front)) {
+			output.accept(frontInner);
+		} else if (connections.has(opposite) || connections.has(back)) {
+			output.accept(frontInner);
 		} else {
-			output.accept(color, frontStandard.withDirection(direction));
+			output.accept(frontHalf);
 		}
 
 		// Back faces.
-		if (connectionState.has(back)) {
-			output.accept(color, backInner.withDirection(direction));
-		} else if (connectionState.has(opposite) && !isOpenCenter) {
-			// Don't render back face if the center is open, as this will be handled by the opposite front face.
-			output.accept(color, backStandard.withDirection(direction));
-		} else if (connectionState.has(back)) {
-			if (isOpenCenter) {
-				output.accept(color, backOuter.withDirection(direction));
-			} else {
-				output.accept(color, backStandard.withDirection(direction));
-			}
+		if (connections.has(back)) {
+			output.accept(backInner);
+		} else if (connections.has(opposite) || connections.has(front)) {
+			output.accept(backInner);
+		} else {
+			output.accept(backHalf);
 		}
 	}
 
