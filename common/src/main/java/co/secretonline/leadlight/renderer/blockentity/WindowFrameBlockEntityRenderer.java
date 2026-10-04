@@ -120,12 +120,12 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 
 		collectOpenCenter(renderState.connections, direction, vertexConsumer,
 			WindowVertexData.FULL_STANDARD, WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE, WindowVertexData.VERTICAL_LEFT_OUTSIDE,
-			WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_OUTSIDE_OPPOSITE);
+			WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_OUTSIDE_OPPOSITE);
 	}
 
 	private static void collectOpenCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
 																				WindowVertexData frontFull, WindowVertexData frontHalf, WindowVertexData frontInner, WindowVertexData frontOuter,
-																				WindowVertexData backInner, WindowVertexData backOuter) {
+																				WindowVertexData backHalf, WindowVertexData backInner, WindowVertexData backOuter) {
 		Direction front = direction.getCounterClockWise();
 		Direction opposite = direction.getOpposite();
 		Direction back = direction.getClockWise();
@@ -146,8 +146,10 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			output.accept(backInner);
 		} else if (connections.has(opposite)) {
 			// Don't render back face if the center is open, as this will be handled by the opposite front face.
-		} else if (connections.has(back)) {
+		} else if (connections.has(front)) {
 			output.accept(backOuter);
+		} else {
+			output.accept(backHalf);
 		}
 	}
 

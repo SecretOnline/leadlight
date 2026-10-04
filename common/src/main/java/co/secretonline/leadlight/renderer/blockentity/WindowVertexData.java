@@ -24,149 +24,107 @@ public class WindowVertexData {
 
 	public static final WindowVertexData FULL_STANDARD = WindowVertexData.quad(
 		START, START,
-		END, START,
-		END, END,
-		START, END
+		END, END
 	);
 	public static final WindowVertexData FULL_STANDARD_OPPOSITE = FULL_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData VERTICAL_LEFT_STANDARD = WindowVertexData.quad(
 		START, START,
-		START_MID, START,
-		START_MID, END,
-		START, END
+		TRUE_MID, END
 	);
 	public static final WindowVertexData VERTICAL_LEFT_STANDARD_OPPOSITE = VERTICAL_LEFT_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData VERTICAL_LEFT_OUTSIDE = WindowVertexData.quad(
 		START, START,
-		END_EDGE, START,
-		END_EDGE, END,
-		START, END
+		END_EDGE, END
 	);
 	public static final WindowVertexData VERTICAL_LEFT_OUTSIDE_OPPOSITE = VERTICAL_LEFT_OUTSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData VERTICAL_LEFT_INSIDE = WindowVertexData.quad(
 		START, START,
-		START_EDGE, START,
-		START_EDGE, END,
-		START, END
+		START_EDGE, END
 	);
 	public static final WindowVertexData VERTICAL_LEFT_INSIDE_OPPOSITE = VERTICAL_LEFT_INSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData VERTICAL_RIGHT_STANDARD = WindowVertexData.quad(
-		END_MID, START,
-		END, START,
-		END, END,
-		END_MID, END
+		TRUE_MID, START,
+		END, END
 	);
 	public static final WindowVertexData VERTICAL_RIGHT_STANDARD_OPPOSITE = VERTICAL_RIGHT_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData VERTICAL_RIGHT_OUTSIDE = WindowVertexData.quad(
 		START_EDGE, START,
-		END, START,
-		END, END,
-		START_EDGE, END
+		END, END
 	);
 	public static final WindowVertexData VERTICAL_RIGHT_OUTSIDE_OPPOSITE = VERTICAL_RIGHT_OUTSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData VERTICAL_RIGHT_INSIDE = WindowVertexData.quad(
 		END_EDGE, START,
-		END, START,
-		END, END,
-		END_EDGE, END
+		END, END
 	);
 	public static final WindowVertexData VERTICAL_RIGHT_INSIDE_OPPOSITE = VERTICAL_RIGHT_INSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData HORIZONTAL_TOP_FULL = WindowVertexData.quad(
 		START, START,
-		END, START,
-		END, START_MID,
-		START, START_MID
+		END, START_MID
 	);
 	public static final WindowVertexData HORIZONTAL_TOP_FULL_OPPOSITE = HORIZONTAL_TOP_FULL.withDirection(Direction.SOUTH);
 	public static final WindowVertexData HORIZONTAL_BOTTOM_FULL = WindowVertexData.quad(
 		START, END_MID,
-		END, END_MID,
-		END, END,
-		START, END
+		END, END
 	);
 	public static final WindowVertexData HORIZONTAL_BOTTOM_FULL_OPPOSITE = HORIZONTAL_BOTTOM_FULL.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_TOP_LEFT_STANDARD = WindowVertexData.quad(
 		START, START,
-		START_MID, START,
-		START_MID, START_MID,
-		START, START_MID
+		TRUE_MID, START_MID
 	);
 	public static final WindowVertexData SQUARE_TOP_LEFT_STANDARD_OPPOSITE = SQUARE_TOP_LEFT_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_TOP_LEFT_OUTSIDE = WindowVertexData.quad(
 		START, START,
-		END_EDGE, START,
-		END_EDGE, START_MID,
-		START, START_MID
+		END_EDGE, START_MID
 	);
 	public static final WindowVertexData SQUARE_TOP_LEFT_OUTSIDE_OPPOSITE = SQUARE_TOP_LEFT_OUTSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_TOP_LEFT_INSIDE = WindowVertexData.quad(
 		START, START,
-		START_EDGE, START,
-		START_EDGE, START_MID,
-		START, START_MID
+		START_EDGE, START_MID
 	);
 	public static final WindowVertexData SQUARE_TOP_LEFT_INSIDE_OPPOSITE = SQUARE_TOP_LEFT_INSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_TOP_RIGHT_STANDARD = WindowVertexData.quad(
-		END_MID, START,
-		END, START,
-		END, START_MID,
-		END_MID, START_MID
+		TRUE_MID, START,
+		END, START_MID
 	);
 	public static final WindowVertexData SQUARE_TOP_RIGHT_STANDARD_OPPOSITE = SQUARE_TOP_RIGHT_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_TOP_RIGHT_OUTSIDE = WindowVertexData.quad(
 		START_EDGE, START,
-		END, START,
-		END, START_MID,
-		START_EDGE, START_MID
+		END, START_MID
 	);
 	public static final WindowVertexData SQUARE_TOP_RIGHT_OUTSIDE_OPPOSITE = SQUARE_TOP_RIGHT_OUTSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_TOP_RIGHT_INSIDE = WindowVertexData.quad(
 		END_EDGE, START,
-		END, START,
-		END, START_MID,
-		END_EDGE, START_MID
+		END, START_MID
 	);
 	public static final WindowVertexData SQUARE_TOP_RIGHT_INSIDE_OPPOSITE = SQUARE_TOP_RIGHT_INSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_BOTTOM_LEFT_STANDARD = WindowVertexData.quad(
 		START, END_MID,
-		START_MID, END_MID,
-		START_MID, END,
-		START, END
+		TRUE_MID, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_LEFT_STANDARD_OPPOSITE = SQUARE_BOTTOM_LEFT_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_BOTTOM_LEFT_OUTSIDE = WindowVertexData.quad(
 		START, END_MID,
-		END_EDGE, END_MID,
-		END_EDGE, END,
-		START, END
+		END_EDGE, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_LEFT_OUTSIDE_OPPOSITE = SQUARE_BOTTOM_LEFT_OUTSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_BOTTOM_LEFT_INSIDE = WindowVertexData.quad(
 		START, END_MID,
-		START_EDGE, END_MID,
-		START_EDGE, END,
-		START, END
+		START_EDGE, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_LEFT_INSIDE_OPPOSITE = SQUARE_BOTTOM_LEFT_INSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_STANDARD = WindowVertexData.quad(
-		END_MID, END_MID,
-		END, END_MID,
-		END, END,
-		END_MID, END
+		TRUE_MID, END_MID,
+		END, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE = SQUARE_BOTTOM_RIGHT_STANDARD.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_OUTSIDE = WindowVertexData.quad(
 		START_EDGE, END_MID,
-		END, END_MID,
-		END, END,
-		START_EDGE, END
+		END, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_OUTSIDE_OPPOSITE = SQUARE_BOTTOM_RIGHT_OUTSIDE.withDirection(Direction.SOUTH);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_INSIDE = WindowVertexData.quad(
 		END_EDGE, END_MID,
-		END, END_MID,
-		END, END,
-		END_EDGE, END
+		END, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE = SQUARE_BOTTOM_RIGHT_INSIDE.withDirection(Direction.SOUTH);
 
@@ -176,6 +134,10 @@ public class WindowVertexData {
 
 	public static WindowVertexData triangle(Vector2f pos1, Vector2f pos2, Vector2f pos3) {
 		return quad(pos1, pos2, pos3, pos1);
+	}
+
+	public static WindowVertexData quad(float x1, float y1, float x2, float y2) {
+		return fromPixelList(new Vector2f(x1, y1), new Vector2f(x1, y2), new Vector2f(x2, y2), new Vector2f(x2, y1));
 	}
 
 	public static WindowVertexData quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
@@ -217,11 +179,11 @@ public class WindowVertexData {
 		private static final Vector3f PLAIN_NORMAL = new Vector3f(0, 1, 0);
 
 		public static Vertex fromUv(Vector2f uv) {
-			return new Vertex(new Vector3f(0.5f - DEPTH_OFFSET, 1 - uv.y, uv.x), uv);
+			return new Vertex(new Vector3f(0.5f - (DEPTH_OFFSET / 16f), 1 - uv.y, uv.x), uv);
 		}
 
 		public Vertex withDirection(Direction newDirection) {
-			float angle = Direction.getYRot(newDirection) + 180f;
+			float angle = 180f - Direction.getYRot(newDirection);
 			float rad = (float) Math.toRadians(angle);
 			float cos = Mth.cos(rad);
 			float sin = Mth.sin(rad);
