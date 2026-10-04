@@ -7,6 +7,7 @@ import co.secretonline.leadlight.item.ModItems;
 import co.secretonline.leadlight.component.ModComponents;
 import co.secretonline.leadlight.platform.NeoForgeRegistryHelper;
 import co.secretonline.leadlight.platform.ServerServiceLoader;
+import co.secretonline.leadlight.sound.ModSounds;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
@@ -20,6 +21,7 @@ public class NeoForgeLeadlight {
 		ModComponents.initialize();
 		ModItems.initialize();
 		ModCreativeModeTabs.initialize();
+		ModSounds.initialize();
 
 		if (ServerServiceLoader.REGISTRY instanceof NeoForgeRegistryHelper neoForgeRegistryHelper) {
 			neoForgeRegistryHelper.registerToBus(modBus);

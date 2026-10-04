@@ -6,6 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -25,6 +26,7 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 	public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPE = DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, Leadlight.MOD_ID);
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Leadlight.MOD_ID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, Leadlight.MOD_ID);
+	public static final DeferredRegister<SoundEvent> SOUND_EVENT = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Leadlight.MOD_ID);
 
 	public void registerToBus(IEventBus modBus) {
 		BLOCK.register(modBus);
@@ -34,6 +36,7 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 		DATA_COMPONENT_TYPE.register(modBus);
 		RECIPE_SERIALIZER.register(modBus);
 		CREATIVE_MODE_TAB.register(modBus);
+		SOUND_EVENT.register(modBus);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,6 +61,9 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 		}
 		if (registryEquals(registry, BuiltInRegistries.CREATIVE_MODE_TAB)) {
 			return (DeferredRegister<T>) CREATIVE_MODE_TAB;
+		}
+		if (registryEquals(registry, BuiltInRegistries.SOUND_EVENT)) {
+			return (DeferredRegister<T>) SOUND_EVENT;
 		}
 
 		throw new IllegalArgumentException("No registry linked in NeoForge to register type: " + registry.key());

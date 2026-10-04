@@ -1,0 +1,20 @@
+{
+  "block.window_frame.add_pane": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.item_frame.place"
+      }
+    ],
+    "subtitle": "subtitles.block.window_frame.add_pane"
+  },
+  "block.window_frame.remove_pane": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.item_frame.remove_item"
+      }
+    ],
+    "subtitle": "subtitles.block.window_frame.remove_pane"
+  }
+}

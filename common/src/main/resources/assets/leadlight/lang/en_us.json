@@ -20,5 +20,7 @@
   "block.leadlight.brown_cut_stained_glass_pane": "Brown Cut Stained Glass Pane",
   "block.leadlight.green_cut_stained_glass_pane": "Green Cut Stained Glass Pane",
   "block.leadlight.red_cut_stained_glass_pane": "Red Cut Stained Glass Pane",
-  "block.leadlight.black_cut_stained_glass_pane": "Black Cut Stained Glass Pane"
+  "block.leadlight.black_cut_stained_glass_pane": "Black Cut Stained Glass Pane",
+  "subtitles.block.window_frame.add_pane": "Window Frame fills",
+  "subtitles.block.window_frame.remove_pane": "Window Frame empties"
 }

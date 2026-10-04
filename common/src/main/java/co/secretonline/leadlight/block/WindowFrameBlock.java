@@ -5,11 +5,12 @@ import co.secretonline.leadlight.component.WindowFrameContentsComponent;
 import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.item.CutStainedGlassPaneItem;
+import co.secretonline.leadlight.sound.ModSounds;
 import co.secretonline.leadlight.tag.ModBlockTags;
-import co.secretonline.leadlight.tag.ModItemTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
@@ -134,7 +135,10 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 		// Slot is empty, place it in
 		WindowFrameContentsComponent newContents = contents.with(slot, Optional.of(cutStainedGlassPaneItem.getColor()));
 		windowFrameBlockEntity.setContents(newContents);
+
 		level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+		level.playSound(player, pos, ModSounds.WINDOW_FRAME_ADD_PANE.get(),
+			SoundSource.BLOCKS, 1.0F, 1.0F);
 
 		return InteractionResult.SUCCESS;
 	}
@@ -161,7 +165,10 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 
 		WindowFrameContentsComponent newContents = contents.with(slot, Optional.empty());
 		windowFrameBlockEntity.setContents(newContents);
+
 		level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+		level.playSound(player, pos, ModSounds.WINDOW_FRAME_REMOVE_PANE.get(),
+			SoundSource.BLOCKS, 1.0F, 1.0F);
 
 		return InteractionResult.SUCCESS;
 	}

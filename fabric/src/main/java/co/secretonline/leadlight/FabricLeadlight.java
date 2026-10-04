@@ -5,6 +5,7 @@ import co.secretonline.leadlight.block.ModBlocks;
 import co.secretonline.leadlight.item.ModCreativeModeTabs;
 import co.secretonline.leadlight.component.ModComponents;
 import co.secretonline.leadlight.item.ModItems;
+import co.secretonline.leadlight.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
 
 public class FabricLeadlight implements ModInitializer {
@@ -16,5 +17,6 @@ public class FabricLeadlight implements ModInitializer {
 		ModComponents.initialize();
 		ModItems.initialize();
 		ModCreativeModeTabs.initialize();
+		ModSounds.initialize();
 	}
 }
