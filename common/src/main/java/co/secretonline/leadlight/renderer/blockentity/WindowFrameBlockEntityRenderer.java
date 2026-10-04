@@ -53,7 +53,7 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		}
 
 		state.frameShape = windowFrameBlock.getFrameShape();
-		state.windowFrameContents = blockEntity.getState();
+		state.windowFrameContents = blockEntity.getContents();
 		state.connections = ConnectionInfo.fromBlockState(blockEntity.getBlockState());
 	}
 

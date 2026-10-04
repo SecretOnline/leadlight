@@ -6,13 +6,19 @@ import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.item.CutStainedGlassPaneItem;
 import co.secretonline.leadlight.tag.ModBlockTags;
+import co.secretonline.leadlight.tag.ModItemTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -26,11 +32,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -67,15 +75,13 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 		this.frameShape = frameShape;
 
 		this.shapes = this.makeShapes();
-	}
 
-	protected BlockState getAbstractWindowFrameBlockState() {
-		return this.stateDefinition.any()
+		this.registerDefaultState(this.stateDefinition.any()
 			.setValue(NORTH, false)
 			.setValue(EAST, false)
 			.setValue(SOUTH, false)
 			.setValue(WEST, false)
-			.setValue(WATERLOGGED, false);
+			.setValue(WATERLOGGED, false));
 	}
 
 	protected Function<BlockState, VoxelShape> makeShapes(
@@ -104,6 +110,63 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 	}
 
 	@Override
+	protected @NonNull InteractionResult useItemOn(@NonNull ItemStack itemStack, @NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
+		if (!(level.getBlockEntity(pos) instanceof WindowFrameBlockEntity windowFrameBlockEntity)) {
+			return InteractionResult.CONSUME;
+		}
+
+		Item item = itemStack.getItem();
+		if (!(item instanceof CutStainedGlassPaneItem cutStainedGlassPaneItem)) {
+			if (item instanceof BlockItem) {
+				return InteractionResult.PASS;
+			} else {
+				return InteractionResult.TRY_WITH_EMPTY_HAND;
+			}
+		}
+
+		WindowFrameContentsComponent.Slot slot = frameShape.processHit(hitResult);
+		WindowFrameContentsComponent contents = windowFrameBlockEntity.getContents();
+		Optional<DyeColor> slotContent = contents.slot(slot);
+		if (slotContent.isPresent()) {
+			return InteractionResult.CONSUME;
+		}
+
+		// Slot is empty, place it in
+		WindowFrameContentsComponent newContents = contents.with(slot, Optional.of(cutStainedGlassPaneItem.getColor()));
+		windowFrameBlockEntity.setContents(newContents);
+		level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+
+		return InteractionResult.SUCCESS;
+	}
+
+	@Override
+	protected @NonNull InteractionResult useWithoutItem(@NonNull BlockState state, @NonNull Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull BlockHitResult hitResult) {
+		if (!(level.getBlockEntity(pos) instanceof WindowFrameBlockEntity windowFrameBlockEntity)) {
+			return InteractionResult.CONSUME;
+		}
+
+		WindowFrameContentsComponent.Slot slot = frameShape.processHit(hitResult);
+		WindowFrameContentsComponent contents = windowFrameBlockEntity.getContents();
+		Optional<DyeColor> slotContent = contents.slot(slot);
+		if (slotContent.isEmpty()) {
+			return InteractionResult.CONSUME;
+		}
+
+		// Slot has something in it, pop it out as an item and remove it.
+		DyeColor dyeColor = slotContent.get();
+		ItemStack item = new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor));
+		if (!player.addItem(item)) {
+			player.drop(item, false);
+		}
+
+		WindowFrameContentsComponent newContents = contents.with(slot, Optional.empty());
+		windowFrameBlockEntity.setContents(newContents);
+		level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+
+		return InteractionResult.SUCCESS;
+	}
+
+	@Override
 	protected @NonNull List<ItemStack> getDrops(@NonNull BlockState state, LootParams.@NonNull Builder params) {
 		List<ItemStack> baseDrops = super.getDrops(state, params);
 
@@ -112,7 +175,7 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 			return baseDrops;
 		}
 
-		WindowFrameContentsComponent contents = windowFrameBlockEntity.getState();
+		WindowFrameContentsComponent contents = windowFrameBlockEntity.getContents();
 		List<ItemStack> drops = new ArrayList<>(baseDrops);
 
 		if (contents.centerTop().isPresent()) {
@@ -254,13 +317,13 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 				if (windowFrameBlockEntity.hasLevel()) {
 					assert windowFrameBlockEntity.getLevel() != null;
 
-					Optional<DyeColor> topColor = windowFrameBlockEntity.getState().sideTop(directionToNeighbour);
+					Optional<DyeColor> topColor = windowFrameBlockEntity.getContents().sideTop(directionToNeighbour);
 					topColor.ifPresent(dyeColor -> {
 						Block.popResourceFromFace(
 							windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor)));
 					});
 
-					Optional<DyeColor> bottomColor = windowFrameBlockEntity.getState().sideBottom(directionToNeighbour);
+					Optional<DyeColor> bottomColor = windowFrameBlockEntity.getContents().sideBottom(directionToNeighbour);
 					bottomColor.ifPresent(dyeColor -> Block.popResourceFromFace(
 						windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor))));
 				}

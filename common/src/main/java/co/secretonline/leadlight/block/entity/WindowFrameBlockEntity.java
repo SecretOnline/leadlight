@@ -20,18 +20,18 @@ import org.jspecify.annotations.Nullable;
 
 public class WindowFrameBlockEntity extends BlockEntity {
 	@NonNull
-	private WindowFrameContentsComponent state = WindowFrameContentsComponent.empty();
+	private WindowFrameContentsComponent contents = WindowFrameContentsComponent.empty();
 
 	public WindowFrameBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.WINDOW_FRAME_BLOCK_ENTITY.get(), worldPosition, blockState);
 	}
 
-	public @NonNull WindowFrameContentsComponent getState() {
-		return state;
+	public @NonNull WindowFrameContentsComponent getContents() {
+		return contents;
 	}
 
-	public void setState(WindowFrameContentsComponent state) {
-		this.state = state;
+	public void setContents(WindowFrameContentsComponent contents) {
+		this.contents = contents;
 		markUpdated();
 	}
 
@@ -39,14 +39,14 @@ public class WindowFrameBlockEntity extends BlockEntity {
 	protected void saveAdditional(@NonNull ValueOutput output) {
 		super.saveAdditional(output);
 
-		output.storeNullable("window_frame_contents", WindowFrameContentsComponent.CODEC, state);
+		output.storeNullable("window_frame_contents", WindowFrameContentsComponent.CODEC, contents);
 	}
 
 	@Override
 	protected void loadAdditional(@NonNull ValueInput input) {
 		super.loadAdditional(input);
 
-		state = input.read("window_frame_contents", WindowFrameContentsComponent.CODEC).orElse(WindowFrameContentsComponent.empty());
+		contents = input.read("window_frame_contents", WindowFrameContentsComponent.CODEC).orElse(WindowFrameContentsComponent.empty());
 	}
 
 	@Override
@@ -63,14 +63,14 @@ public class WindowFrameBlockEntity extends BlockEntity {
 	protected void applyImplicitComponents(@NonNull DataComponentGetter components) {
 		super.applyImplicitComponents(components);
 
-		state = components.getOrDefault(ModComponents.WINDOW_FRAME_CONTENTS.get(),  WindowFrameContentsComponent.empty());
+		contents = components.getOrDefault(ModComponents.WINDOW_FRAME_CONTENTS.get(),  WindowFrameContentsComponent.empty());
 	}
 
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.@NonNull Builder components) {
 		super.collectImplicitComponents(components);
 
-		components.set(ModComponents.WINDOW_FRAME_CONTENTS.get(), state);
+		components.set(ModComponents.WINDOW_FRAME_CONTENTS.get(), contents);
 	}
 
 	@Override
