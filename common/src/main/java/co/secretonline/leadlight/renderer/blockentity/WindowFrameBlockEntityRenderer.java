@@ -95,9 +95,9 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		}
 
 		for (Map.Entry<DyeColor, List<WindowVertexData>> dyeColorListEntry : collection.entrySet()) {
-			Block paneBlock = CutStainedGlassPaneItem.ofColor(dyeColorListEntry.getKey()).getPaneBlock();
+			Block paneBlock = CutStainedGlassPaneItem.ofColor(dyeColorListEntry.getKey()).getGlassBlock();
 			Identifier blockId = BuiltInRegistries.BLOCK.getKey(paneBlock);
-			SpriteId spriteId = new SpriteId(TextureAtlas.LOCATION_BLOCKS, blockId);
+			SpriteId spriteId = new SpriteId(TextureAtlas.LOCATION_BLOCKS, blockId.withPrefix("block/"));
 			TextureAtlasSprite sprite = spriteGetter.get(spriteId);
 
 			VertexConsumer consumer = sprite.wrap(buffer);
