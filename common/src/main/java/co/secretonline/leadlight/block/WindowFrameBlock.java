@@ -12,9 +12,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
@@ -38,6 +40,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
@@ -237,12 +240,37 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return directionToNeighbour.getAxis().isHorizontal()
-			? state.setValue(
-			PROPERTY_BY_DIRECTION.get(directionToNeighbour),
-			this.attachesTo(neighbourState, neighbourState.isFaceSturdy(level, neighbourPos, directionToNeighbour.getOpposite()))
-		)
-			: super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
+		if (directionToNeighbour.getAxis().isHorizontal()) {
+			BooleanProperty property = PROPERTY_BY_DIRECTION.get(directionToNeighbour);
+			boolean currentlyConnects = state.getValue(property);
+			boolean shouldConnect = this.attachesTo(neighbourState, neighbourState.isFaceSturdy(level, neighbourPos, directionToNeighbour.getOpposite()));
+
+			// Pop out any items that are in this side of the frame
+			if (currentlyConnects && !shouldConnect) {
+				BlockEntity blockEntity = level.getBlockEntity(pos);
+				if (!(blockEntity instanceof WindowFrameBlockEntity windowFrameBlockEntity)) {
+					throw new IllegalStateException("Block entity is not the correct type");
+				}
+				if (windowFrameBlockEntity.hasLevel()) {
+					assert windowFrameBlockEntity.getLevel() != null;
+
+					Optional<DyeColor> topColor = windowFrameBlockEntity.getState().sideTop(directionToNeighbour);
+					topColor.ifPresent(dyeColor -> {
+						Block.popResourceFromFace(
+							windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor)));
+					});
+
+					Optional<DyeColor> bottomColor = windowFrameBlockEntity.getState().sideBottom(directionToNeighbour);
+					bottomColor.ifPresent(dyeColor -> Block.popResourceFromFace(
+						windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor))));
+				}
+
+			}
+
+			return state.setValue(property, shouldConnect);
+		}
+
+		return super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
 	}
 
 	@Override
