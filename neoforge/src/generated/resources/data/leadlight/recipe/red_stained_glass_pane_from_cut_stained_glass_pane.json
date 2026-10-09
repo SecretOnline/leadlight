@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "c": "leadlight:red_cut_stained_glass_pane"
+  },
+  "pattern": [
+    "cc",
+    "cc"
+  ],
+  "result": {
+    "id": "minecraft:red_stained_glass_pane"
+  }
+}
