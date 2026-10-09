@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -127,6 +128,15 @@ public class WindowVertexData {
 		END, END
 	);
 	public static final WindowVertexData SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE = SQUARE_BOTTOM_RIGHT_INSIDE.withDirection(Direction.SOUTH);
+	public static final WindowVertexData POST_FULL = post(START, END);
+	public static final WindowVertexData POST_TOP = post(START, START_MID);
+	public static final WindowVertexData POST_BOTTOM = post(END_MID, END);
+
+	public static WindowVertexData post(float y1, float y2) {
+		WindowVertexData side = quad(TRUE_MID - DEPTH_OFFSET, y1, TRUE_MID + DEPTH_OFFSET, y2);
+		WindowVertexData corner = merge(side, side.withDirection(Direction.EAST));
+		return merge(corner, corner.withDirection(Direction.SOUTH));
+	}
 
 	public static WindowVertexData triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 		return triangle(new Vector2f(x1, y1), new Vector2f(x2, y2), new Vector2f(x3, y3));
@@ -146,6 +156,14 @@ public class WindowVertexData {
 
 	public static WindowVertexData quad(Vector2f pos1, Vector2f pos2, Vector2f pos3, Vector2f pos4) {
 		return fromPixelList(pos1, pos2, pos3, pos4);
+	}
+
+	public static WindowVertexData merge(WindowVertexData a, WindowVertexData b) {
+		List<Vertex> newVertices = new ArrayList<>(a.vertices.size() + b.vertices.size());
+		newVertices.addAll(a.vertices);
+		newVertices.addAll(b.vertices);
+
+		return new WindowVertexData(newVertices);
 	}
 
 	public static WindowVertexData fromPixelList(Vector2f... pixels) {

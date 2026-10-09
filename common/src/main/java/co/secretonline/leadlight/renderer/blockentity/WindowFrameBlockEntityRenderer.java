@@ -79,16 +79,28 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			collection.get(color).add(vertex);
 		};
 
+		// Collect side faces
 		DirectionCollector collector = switch (renderState.frameShape) {
 			case LARGE -> WindowFrameBlockEntityRenderer::collectLargeFrameVertexData;
 			case VERTICAL -> WindowFrameBlockEntityRenderer::collectVerticalFrameVertexData;
 			case HORIZONTAL -> WindowFrameBlockEntityRenderer::collectHorizontalFrameVertexData;
 			case SQUARE -> WindowFrameBlockEntityRenderer::collectSquareFrameVertexData;
 		};
-
 		for (Direction direction : HORIZONTAL_DIRECTIONS) {
 			if (renderState.connections.has(direction)) {
 				collector.collect(direction, renderState, vertexDataBiConsumer);
+			}
+		}
+
+		// Collect center faces for any center
+		if (renderState.frameShape.hasCenterTopSlot() || renderState.frameShape.hasCenterBottomSlot()) {
+			CenterCollector centerCollector = switch (renderState.frameShape) {
+				case LARGE -> WindowFrameBlockEntityRenderer::collectLargeFrameCenterVertexData;
+				case HORIZONTAL -> WindowFrameBlockEntityRenderer::collectHorizontalFrameCenterVertexData;
+				default -> null;
+			};
+			if (centerCollector != null && renderState.connections.isEmpty()) {
+				centerCollector.collect(renderState, vertexDataBiConsumer);
 			}
 		}
 
@@ -116,6 +128,11 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 				WindowVertexData.FULL_STANDARD, WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE, WindowVertexData.VERTICAL_LEFT_OUTSIDE,
 				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_OUTSIDE_OPPOSITE);
 		}
+	}
+
+	private static void collectLargeFrameCenterVertexData(@NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> colorOptional = renderState.windowFrameContents.centerTop();
+		colorOptional.ifPresent(color -> output.accept(color, WindowVertexData.POST_FULL));
 	}
 
 	private static void collectVerticalFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
@@ -153,6 +170,14 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 				WindowVertexData.HORIZONTAL_BOTTOM_FULL, WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD, WindowVertexData.SQUARE_BOTTOM_LEFT_INSIDE, WindowVertexData.SQUARE_BOTTOM_LEFT_OUTSIDE,
 				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_OUTSIDE_OPPOSITE);
 		}
+	}
+
+	private static void collectHorizontalFrameCenterVertexData(@NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> topColorOptional = renderState.windowFrameContents.centerTop();
+		topColorOptional.ifPresent(color -> output.accept(color, WindowVertexData.POST_TOP));
+
+		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.centerBottom();
+		bottomColorOptional.ifPresent(color -> output.accept(color, WindowVertexData.POST_BOTTOM));
 	}
 
 	private static void collectSquareFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
@@ -238,5 +263,10 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 	@FunctionalInterface
 	private interface DirectionCollector {
 		void collect(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> addVertexData);
+	}
+
+	@FunctionalInterface
+	private interface CenterCollector {
+		void collect(@NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> addVertexData);
 	}
 }

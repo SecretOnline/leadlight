@@ -27,4 +27,8 @@ public record ConnectionInfo(boolean north, boolean east, boolean south, boolean
 			default -> throw new IllegalArgumentException("Invalid direction: " + direction);
 		};
 	}
+
+	public boolean isEmpty() {
+		return !(north || east || south || west);
+	}
 }
