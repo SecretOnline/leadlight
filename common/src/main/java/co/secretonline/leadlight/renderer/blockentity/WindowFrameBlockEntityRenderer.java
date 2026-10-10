@@ -207,7 +207,38 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 	}
 
 	private static void collectCrossFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> topColorOptional = renderState.windowFrameContents.centerTop();
+		if (topColorOptional.isPresent()) {
+			DyeColor color = topColorOptional.get();
 
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectOpenCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.CROSS_TOP_FULL, WindowVertexData.CROSS_TOP_LEFT_STANDARD, WindowVertexData.CROSS_TOP_LEFT_INSIDE, WindowVertexData.CROSS_TOP_LEFT_OUTSIDE,
+				WindowVertexData.CROSS_TOP_RIGHT_STANDARD_OPPOSITE, WindowVertexData.CROSS_TOP_RIGHT_INSIDE_OPPOSITE, WindowVertexData.CROSS_TOP_RIGHT_OUTSIDE_OPPOSITE);
+		}
+
+		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.centerBottom();
+		if (bottomColorOptional.isPresent()) {
+			DyeColor color = bottomColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectOpenCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.CROSS_BOTTOM_FULL, WindowVertexData.CROSS_BOTTOM_LEFT_STANDARD, WindowVertexData.CROSS_BOTTOM_LEFT_INSIDE, WindowVertexData.CROSS_BOTTOM_LEFT_OUTSIDE,
+				WindowVertexData.CROSS_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.CROSS_BOTTOM_RIGHT_INSIDE_OPPOSITE, WindowVertexData.CROSS_BOTTOM_RIGHT_OUTSIDE_OPPOSITE);
+		}
+
+		Optional<DyeColor> sideColorOptional = renderState.windowFrameContents.sideTop(direction);
+		if (sideColorOptional.isPresent()) {
+			DyeColor color = sideColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectClosedCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.CROSS_LEFT_STANDARD, WindowVertexData.CROSS_LEFT_STANDARD,
+				WindowVertexData.CROSS_RIGHT_STANDARD_OPPOSITE, WindowVertexData.CROSS_RIGHT_STANDARD_OPPOSITE);
+		}
 	}
 
 	private static void collectDiamondFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
