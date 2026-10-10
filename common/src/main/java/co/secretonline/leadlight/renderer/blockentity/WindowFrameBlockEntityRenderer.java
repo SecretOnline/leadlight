@@ -236,13 +236,41 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectClosedCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.CROSS_LEFT_STANDARD, WindowVertexData.CROSS_LEFT_STANDARD,
-				WindowVertexData.CROSS_RIGHT_STANDARD_OPPOSITE, WindowVertexData.CROSS_RIGHT_STANDARD_OPPOSITE);
+				WindowVertexData.CROSS_LEFT_STANDARD, WindowVertexData.CROSS_RIGHT_STANDARD_OPPOSITE);
 		}
 	}
 
 	private static void collectDiamondFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+		Optional<DyeColor> centerColorOptional = renderState.windowFrameContents.centerTop();
+		if (centerColorOptional.isPresent()) {
+			DyeColor color = centerColorOptional.get();
 
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectOpenCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.DIAMOND_CENTER_FULL, WindowVertexData.DIAMOND_CENTER_LEFT_STANDARD, WindowVertexData.DIAMOND_CENTER_LEFT_INSIDE, WindowVertexData.DIAMOND_CENTER_LEFT_OUTSIDE,
+				WindowVertexData.DIAMOND_CENTER_RIGHT_STANDARD_OPPOSITE, WindowVertexData.DIAMOND_CENTER_RIGHT_INSIDE_OPPOSITE, WindowVertexData.DIAMOND_CENTER_RIGHT_OUTSIDE_OPPOSITE);
+		}
+
+		Optional<DyeColor> sideTopColorOptional = renderState.windowFrameContents.sideTop(direction);
+		if (sideTopColorOptional.isPresent()) {
+			DyeColor color = sideTopColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectClosedCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.DIAMOND_TOP_LEFT_STANDARD, WindowVertexData.DIAMOND_TOP_RIGHT_STANDARD_OPPOSITE);
+		}
+
+		Optional<DyeColor> sideBottomColorOptional = renderState.windowFrameContents.sideBottom(direction);
+		if (sideBottomColorOptional.isPresent()) {
+			DyeColor color = sideBottomColorOptional.get();
+
+			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
+
+			collectClosedCenter(renderState.connections, direction, vertexConsumer,
+				WindowVertexData.DIAMOND_BOTTOM_LEFT_STANDARD, WindowVertexData.DIAMOND_BOTTOM_RIGHT_STANDARD_OPPOSITE);
+		}
 	}
 
 	private static void collectOpenCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
@@ -275,6 +303,10 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		}
 	}
 
+	private static void collectClosedCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
+																					WindowVertexData front, WindowVertexData back) {
+		collectClosedCenter(connections, direction, output, front, front, back, back);
+	}
 	private static void collectClosedCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
 																					WindowVertexData frontHalf, WindowVertexData frontInner,
 																					WindowVertexData backHalf, WindowVertexData backInner) {
