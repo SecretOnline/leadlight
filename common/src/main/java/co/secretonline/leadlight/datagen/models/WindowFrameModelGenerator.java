@@ -4,13 +4,18 @@ import co.secretonline.leadlight.block.WindowFrameBlock;
 import co.secretonline.leadlight.block.ModBlocks;
 import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.data.models.ModTextureMappings;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class WindowFrameModelGenerator {
 	private final Consumer<BlockModelDefinitionGenerator> blockStateOutput;
@@ -33,9 +38,13 @@ public class WindowFrameModelGenerator {
 			? new OpenCenterFrameModels(blockStateOutput, itemModelOutput, modelOutput)
 			: new ClosedCenterFrameModels(blockStateOutput, itemModelOutput, modelOutput);
 
+
 		TextureMapping frameMapping = ModTextureMappings.ofMaterial(block.getFrameMaterial());
 
 		this.blockStateOutput
 			.accept(models.createGenerator(block, frameMapping));
+	}
+
+	private void createItemModel(final WindowFrameBlock block) {
 	}
 }

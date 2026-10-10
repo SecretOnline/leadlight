@@ -29,6 +29,7 @@ public class ClosedCenterFrameModels extends BaseFrameModels {
 		MultiVariant noSide = plainVariant(modelTemplates.NoSide.create(block, textureMapping, this.modelOutput));
 		MultiVariant noSideAlt = plainVariant(modelTemplates.NoSideAlt.create(block, textureMapping, this.modelOutput));
 
+		modelTemplates.ItemBlock.create(block, textureMapping, this.modelOutput);
 
 		return MultiPartGenerator.multiPart(block)
 			// Central bits are always there

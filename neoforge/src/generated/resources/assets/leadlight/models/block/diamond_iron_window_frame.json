@@ -1,0 +1,9 @@
+{
+  "parent": "leadlight:block/template_diamond_window_frame",
+  "textures": {
+    "bar": "leadlight:block/iron_window_frame_bar",
+    "cross": "leadlight:block/iron_window_frame_cross",
+    "diamond": "leadlight:block/iron_window_frame_diamond",
+    "post": "leadlight:block/iron_window_frame_post"
+  }
+}

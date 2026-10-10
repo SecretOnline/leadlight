@@ -28,6 +28,7 @@ public class ModModelTemplates {
 
 	public static class ShapeModelTemplates {
 		public final ModelTemplate Item;
+		public final ModelTemplate ItemBlock;
 		public final ModelTemplate Post;
 		public final ModelTemplate Side;
 		public final ModelTemplate SideAlt;
@@ -36,6 +37,7 @@ public class ModModelTemplates {
 
 		ShapeModelTemplates(FrameShape frameShape) {
 			Item = createItemTemplate(frameShape.getPrefix());
+			ItemBlock = createItemBlockTemplate(frameShape.getPrefix());
 
 			Post = createTemplate(frameShape.getPrefix(), "post");
 			Side = createTemplate(frameShape.getPrefix(), "side");
@@ -46,6 +48,11 @@ public class ModModelTemplates {
 
 		private static ModelTemplate createItemTemplate(String shape) {
 			return new ModelTemplate(Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")), Optional.empty(),
+				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
+		}
+
+		private static ModelTemplate createItemBlockTemplate(String shape) {
+			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_window_frame")), Optional.empty(),
 				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
 		}
 

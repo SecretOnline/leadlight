@@ -1,7 +1,7 @@
 {
 	"format_version": "26.3",
 	"textures": {
-		"particle": "post"
+		"particle": "#post"
 	},
 	"elements": [
 		{
@@ -314,5 +314,38 @@
 				"down": {"uv": [14, 0, 16, 9], "texture": "#diamond"}
 			}
 		}
-	]
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [0, 1, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 1, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"gui": {
+			"rotation": [30, 45, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"head": {
+			"rotation": [0, -90, 0],
+			"translation": [0, 0, -8]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0]
+		},
+		"on_shelf": {
+			"rotation": [0, -90, 0]
+		}
+	}
 }

@@ -13,6 +13,7 @@ type Part = "post" | "side" | "side_alt" | "no_side" | "no_side_alt";
 type SimpleModel = {
   textures: Record<string, string>;
   elements: { name: string }[];
+  display?: unknown;
 };
 
 const INPUT_FILE = resolve(
@@ -23,6 +24,8 @@ const OUTPUT_DIR = resolve(
   import.meta.dirname,
   "../common/src/main/resources/assets/leadlight/models/block",
 );
+
+const MAIN_PARTS: Part[] = ["post", "side", "side_alt"];
 
 const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
   large: {
@@ -97,8 +100,16 @@ const baseModelStr = await readFile(INPUT_FILE, { encoding: "utf-8" });
 const baseModel: SimpleModel = JSON.parse(baseModelStr);
 
 for (const [shape, parts] of Object.entries(SHAPE_PART_ELEMENTS)) {
+  const mainParts = new Set<string>();
+
   for (const [part, elements] of Object.entries(parts)) {
     const filename = `template_${shape}_window_frame_${part}.json`;
+
+    if (MAIN_PARTS.includes(part as Part)) {
+      for (const element of elements) {
+        mainParts.add(element);
+      }
+    }
 
     const newModel: SimpleModel = {
       textures: baseModel.textures,
@@ -110,4 +121,16 @@ for (const [shape, parts] of Object.entries(SHAPE_PART_ELEMENTS)) {
     console.log(`Writing ${filename}`);
     await writeFile(resolve(OUTPUT_DIR, filename), JSON.stringify(newModel));
   }
+
+  const mainFilename = `template_${shape}_window_frame.json`;
+  const newModel: SimpleModel = {
+    textures: baseModel.textures,
+    elements: baseModel.elements.filter((element) =>
+      mainParts.has(element.name),
+    ),
+    display: baseModel.display,
+  };
+
+  console.log(`Writing ${mainFilename}`);
+  await writeFile(resolve(OUTPUT_DIR, mainFilename), JSON.stringify(newModel));
 }
