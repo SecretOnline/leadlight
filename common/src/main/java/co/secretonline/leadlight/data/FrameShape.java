@@ -5,13 +5,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.phys.BlockHitResult;
+import org.joml.Vector3d;
 import org.jspecify.annotations.NonNull;
 
 public enum FrameShape implements StringRepresentable {
 	LARGE("large", HitProcessor::LARGE, true, false, false, false),
 	VERTICAL("vertical", HitProcessor::VERTICAL, false, false, true, false),
 	HORIZONTAL("horizontal", HitProcessor::HORIZONTAL, true, true, false, false),
-	SQUARE("square", HitProcessor::SQUARE, false, false, true, true);
+	SQUARE("square", HitProcessor::SQUARE, false, false, true, true),
+	CROSS("cross", HitProcessor::CROSS, true, true, true, false),
+	DIAMOND("diamond", HitProcessor::DIAMOND, true, false, true, true);
 
 	private final String prefix;
 	private final HitProcessor hitProcessor;
@@ -62,22 +65,37 @@ public enum FrameShape implements StringRepresentable {
 	public interface HitProcessor {
 		WindowFrameContentsComponent.Slot getSlot(BlockHitResult blockHitResult);
 
+		static Vector3d getRelativeCenterCoords(BlockHitResult hitResult) {
+			BlockPos blockPos = hitResult.getBlockPos();
+
+			double x = hitResult.getLocation().x - blockPos.getX();
+			double y = hitResult.getLocation().y - blockPos.getY();
+			double z = hitResult.getLocation().z - blockPos.getZ();
+
+			return new Vector3d(x - 0.5, y - 0.5, z - 0.5);
+		}
+
+		static Direction getDirection(Vector3d relativeCoords) {
+			return Math.abs(relativeCoords.x) > Math.abs(relativeCoords.z)
+				? (relativeCoords.x > 0 ? Direction.EAST : Direction.WEST)
+				: (relativeCoords.z > 0 ? Direction.SOUTH : Direction.NORTH);
+		}
+
 		static WindowFrameContentsComponent.Slot LARGE(@NonNull BlockHitResult hitResult) {
 			return WindowFrameContentsComponent.Slot.CENTER_TOP;
 		}
 
 		static WindowFrameContentsComponent.Slot VERTICAL(@NonNull BlockHitResult hitResult) {
-			BlockPos blockPos = hitResult.getBlockPos();
-			double x = hitResult.getLocation().x - blockPos.getX();
-			double z = hitResult.getLocation().z - blockPos.getZ();
+			Vector3d relativeCoords = getRelativeCenterCoords(hitResult);
+			Direction direction = getDirection(relativeCoords);
 
-			return Math.abs(x - 0.5) > Math.abs(z - 0.5)
-				? (x >= 0.5
-				? WindowFrameContentsComponent.Slot.EAST_TOP
-				: WindowFrameContentsComponent.Slot.WEST_TOP)
-				: (z >= 0.5
-				? WindowFrameContentsComponent.Slot.SOUTH_TOP
-				: WindowFrameContentsComponent.Slot.NORTH_TOP);
+			return switch (direction) {
+				case NORTH -> WindowFrameContentsComponent.Slot.NORTH_TOP;
+				case EAST -> WindowFrameContentsComponent.Slot.EAST_TOP;
+				case SOUTH -> WindowFrameContentsComponent.Slot.SOUTH_TOP;
+				case WEST -> WindowFrameContentsComponent.Slot.WEST_TOP;
+				default -> throw new IllegalStateException("Unknown direction: " + direction);
+			};
 		}
 
 		static WindowFrameContentsComponent.Slot HORIZONTAL(@NonNull BlockHitResult hitResult) {
@@ -89,17 +107,63 @@ public enum FrameShape implements StringRepresentable {
 		}
 
 		static WindowFrameContentsComponent.Slot SQUARE(@NonNull BlockHitResult hitResult) {
-			BlockPos blockPos = hitResult.getBlockPos();
-			boolean isTopSlot = hitResult.getLocation().y - blockPos.getY() >= 0.5;
+			Vector3d relativeCoords = getRelativeCenterCoords(hitResult);
+			Direction direction = getDirection(relativeCoords);
+			boolean isTopSlot = relativeCoords.y >= 0;
 
-			double x = hitResult.getLocation().x - blockPos.getX();
-			double z = hitResult.getLocation().z - blockPos.getZ();
-			double dx = x - 0.5;
-			double dz = z - 0.5;
+			return switch (direction) {
+				case NORTH -> isTopSlot
+					? WindowFrameContentsComponent.Slot.NORTH_TOP
+					: WindowFrameContentsComponent.Slot.NORTH_BOTTOM;
+				case EAST -> isTopSlot
+					? WindowFrameContentsComponent.Slot.EAST_TOP
+					: WindowFrameContentsComponent.Slot.EAST_BOTTOM;
+				case SOUTH -> isTopSlot
+					? WindowFrameContentsComponent.Slot.SOUTH_TOP
+					: WindowFrameContentsComponent.Slot.SOUTH_BOTTOM;
+				case WEST -> isTopSlot
+					? WindowFrameContentsComponent.Slot.WEST_TOP
+					: WindowFrameContentsComponent.Slot.WEST_BOTTOM;
+				default -> throw new IllegalStateException();
+			};
+		}
 
-			Direction direction = Math.abs(dx) > Math.abs(dz)
-				? (dx > 0 ? Direction.EAST : Direction.WEST)
-				: (dz > 0 ? Direction.SOUTH : Direction.NORTH);
+		static WindowFrameContentsComponent.Slot CROSS(@NonNull BlockHitResult hitResult) {
+			Vector3d relativeCoords = getRelativeCenterCoords(hitResult);
+			Direction direction = getDirection(relativeCoords);
+			boolean isTopSlot = relativeCoords.y >= 0;
+
+			double absY = Math.abs(relativeCoords.y);
+			double absDir = Math.max(Math.abs(relativeCoords.x), Math.abs(relativeCoords.z));
+
+			// If the hit position is more up/down than in/out
+			if (absY > absDir) {
+				return isTopSlot
+					? WindowFrameContentsComponent.Slot.CENTER_TOP
+					: WindowFrameContentsComponent.Slot.CENTER_BOTTOM;
+			}
+
+			return switch (direction) {
+				case NORTH -> WindowFrameContentsComponent.Slot.NORTH_TOP;
+				case EAST -> WindowFrameContentsComponent.Slot.EAST_TOP;
+				case SOUTH -> WindowFrameContentsComponent.Slot.SOUTH_TOP;
+				case WEST -> WindowFrameContentsComponent.Slot.WEST_TOP;
+				default -> throw new IllegalStateException();
+			};
+		}
+
+		static WindowFrameContentsComponent.Slot DIAMOND(@NonNull BlockHitResult hitResult) {
+			Vector3d relativeCoords = getRelativeCenterCoords(hitResult);
+			Direction direction = getDirection(relativeCoords);
+			boolean isTopSlot = relativeCoords.y >= 0;
+
+			double absY = Math.abs(relativeCoords.y);
+			double absDir = Math.max(Math.abs(relativeCoords.x), Math.abs(relativeCoords.z));
+
+			// If the hit position is within the center
+			if ((absY + absDir) < 0.5) {
+				return WindowFrameContentsComponent.Slot.CENTER_TOP;
+			}
 
 			return switch (direction) {
 				case NORTH -> isTopSlot

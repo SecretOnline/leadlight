@@ -85,6 +85,24 @@ public class LeadlightRecipeProvider extends RecipeProvider {
 					.unlockedBy("has_material", has(recipeMaterial))
 					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
 					.save(output);
+				case CROSS -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+					.define('f', largeFrame)
+					.define('m', recipeMaterial)
+					.pattern("m m")
+					.pattern(" f ")
+					.pattern("m m")
+					.unlockedBy("has_material", has(recipeMaterial))
+					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+					.save(output);
+				case DIAMOND -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+					.define('f', largeFrame)
+					.define('m', recipeMaterial)
+					.pattern("mmm")
+					.pattern("mfm")
+					.pattern("mmm")
+					.unlockedBy("has_material", has(recipeMaterial))
+					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+					.save(output);
 			}
 		});
 	}

@@ -31,12 +31,16 @@ public class ModBlocks {
 	public static final Supplier<WindowFrameBlock> VERTICAL_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.VERTICAL);
 	public static final Supplier<WindowFrameBlock> HORIZONTAL_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.HORIZONTAL);
 	public static final Supplier<WindowFrameBlock> SQUARE_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.SQUARE);
+	public static final Supplier<WindowFrameBlock> CROSS_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.CROSS);
+	public static final Supplier<WindowFrameBlock> DIAMOND_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.DIAMOND);
 
 	public static final Supplier<Stream<WindowFrameBlock>> ALL_FRAME_BLOCKS = () -> Stream.of(
 		LARGE_IRON_WINDOW_FRAME_BLOCK.get(),
 		VERTICAL_IRON_WINDOW_FRAME_BLOCK.get(),
 		HORIZONTAL_IRON_WINDOW_FRAME_BLOCK.get(),
-		SQUARE_IRON_WINDOW_FRAME_BLOCK.get()
+		SQUARE_IRON_WINDOW_FRAME_BLOCK.get(),
+		CROSS_IRON_WINDOW_FRAME_BLOCK.get(),
+		DIAMOND_IRON_WINDOW_FRAME_BLOCK.get()
 	);
 
 	private static Supplier<WindowFrameBlock> registerWindowFrameBlock(FrameMaterial material, FrameShape shape) {

@@ -1,7 +1,13 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-type Shape = "large" | "vertical" | "horizontal" | "square";
+type Shape =
+  | "large"
+  | "vertical"
+  | "horizontal"
+  | "square"
+  | "cross"
+  | "diamond";
 type Part = "post" | "side" | "side_alt" | "no_side" | "no_side_alt";
 
 type SimpleModel = {
@@ -46,6 +52,44 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     side_alt: ["side_s", "bar_ceil_s", "bar_center_s", "bar_floor_s"],
     no_side: ["no_side_top_n", "no_side_bottom_n"],
     no_side_alt: ["no_side_top_s", "no_side_bottom_s"],
+  },
+  cross: {
+    post: ["center_ceil", "center_center", "center_floor"],
+    side: [
+      "side_n",
+      "bar_ceil_n",
+      "cross_top_n",
+      "cross_bottom_n",
+      "bar_floor_n",
+    ],
+    side_alt: [
+      "side_s",
+      "bar_ceil_s",
+      "cross_top_s",
+      "cross_bottom_s",
+      "bar_floor_s",
+    ],
+    no_side: ["no_side_top_n", "no_side_bottom_n"],
+    no_side_alt: ["no_side_top_s", "no_side_bottom_s"],
+  },
+  diamond: {
+    post: ["center_ceil", "center_floor"],
+    side: [
+      "side_n",
+      "bar_ceil_n",
+      "diam_top_n",
+      "diam_bottom_n",
+      "bar_floor_n",
+    ],
+    side_alt: [
+      "side_s",
+      "bar_ceil_s",
+      "diam_top_s",
+      "diam_bottom_s",
+      "bar_floor_s",
+    ],
+    no_side: ["no_side_tall_n"],
+    no_side_alt: ["no_side_tall_s"],
   },
 };
 

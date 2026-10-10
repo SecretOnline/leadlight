@@ -85,6 +85,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			case VERTICAL -> WindowFrameBlockEntityRenderer::collectVerticalFrameVertexData;
 			case HORIZONTAL -> WindowFrameBlockEntityRenderer::collectHorizontalFrameVertexData;
 			case SQUARE -> WindowFrameBlockEntityRenderer::collectSquareFrameVertexData;
+			case CROSS -> WindowFrameBlockEntityRenderer::collectCrossFrameVertexData;
+			case DIAMOND -> WindowFrameBlockEntityRenderer::collectDiamondFrameVertexData;
 		};
 		for (Direction direction : HORIZONTAL_DIRECTIONS) {
 			if (renderState.connections.has(direction)) {
@@ -95,8 +97,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		// Collect center faces for any center
 		if (renderState.frameShape.hasCenterTopSlot() || renderState.frameShape.hasCenterBottomSlot()) {
 			CenterCollector centerCollector = switch (renderState.frameShape) {
-				case LARGE -> WindowFrameBlockEntityRenderer::collectLargeFrameCenterVertexData;
-				case HORIZONTAL -> WindowFrameBlockEntityRenderer::collectHorizontalFrameCenterVertexData;
+				case LARGE, CROSS -> WindowFrameBlockEntityRenderer::collectLargeFrameCenterVertexData;
+				case HORIZONTAL, DIAMOND -> WindowFrameBlockEntityRenderer::collectHorizontalFrameCenterVertexData;
 				default -> null;
 			};
 			if (centerCollector != null && renderState.connections.isEmpty()) {
@@ -202,6 +204,14 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 				WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD, WindowVertexData.SQUARE_BOTTOM_LEFT_INSIDE,
 				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE);
 		}
+	}
+
+	private static void collectCrossFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+
+	}
+
+	private static void collectDiamondFrameVertexData(@NonNull Direction direction, @NonNull WindowFrameBlockEntityRenderState renderState, @NonNull BiConsumer<DyeColor, WindowVertexData> output) {
+
 	}
 
 	private static void collectOpenCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,

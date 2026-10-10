@@ -12,6 +12,8 @@ public class ModModelTemplates {
 	public static final ShapeModelTemplates VERTICAL = new ShapeModelTemplates(FrameShape.VERTICAL);
 	public static final ShapeModelTemplates HORIZONTAL = new ShapeModelTemplates(FrameShape.HORIZONTAL);
 	public static final ShapeModelTemplates SQUARE = new ShapeModelTemplates(FrameShape.SQUARE);
+	public static final ShapeModelTemplates CROSS = new ShapeModelTemplates(FrameShape.CROSS);
+	public static final ShapeModelTemplates DIAMOND = new ShapeModelTemplates(FrameShape.DIAMOND);
 
 	public static ShapeModelTemplates ofShape(FrameShape frameShape) {
 		return switch (frameShape) {
@@ -19,6 +21,8 @@ public class ModModelTemplates {
 			case VERTICAL -> VERTICAL;
 			case HORIZONTAL -> HORIZONTAL;
 			case SQUARE -> SQUARE;
+			case CROSS -> CROSS;
+			case DIAMOND -> DIAMOND;
 		};
 	}
 
@@ -41,11 +45,13 @@ public class ModModelTemplates {
 		}
 
 		private static ModelTemplate createItemTemplate(String shape) {
-			return new ModelTemplate(Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")), Optional.empty(), ModTextureSlots.POST, ModTextureSlots.BAR);
+			return new ModelTemplate(Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")), Optional.empty(),
+				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
 		}
 
 		private static ModelTemplate createTemplate(String shape, String part) {
-			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_window_frame" + "_" + part)), Optional.of("_" + part), ModTextureSlots.POST, ModTextureSlots.BAR);
+			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_window_frame" + "_" + part)), Optional.of("_" + part),
+				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
 		}
 	}
 }

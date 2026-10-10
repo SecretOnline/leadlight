@@ -3,6 +3,8 @@
     "leadlight:large_iron_window_frame",
     "leadlight:vertical_iron_window_frame",
     "leadlight:horizontal_iron_window_frame",
-    "leadlight:square_iron_window_frame"
+    "leadlight:square_iron_window_frame",
+    "leadlight:cross_iron_window_frame",
+    "leadlight:diamond_iron_window_frame"
   ]
 }
