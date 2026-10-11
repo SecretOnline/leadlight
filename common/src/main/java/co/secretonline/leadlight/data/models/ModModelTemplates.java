@@ -27,7 +27,6 @@ public class ModModelTemplates {
 	}
 
 	public static class ShapeModelTemplates {
-		public final ModelTemplate Item;
 		public final ModelTemplate ItemBlock;
 		public final ModelTemplate Post;
 		public final ModelTemplate Side;
@@ -36,29 +35,40 @@ public class ModModelTemplates {
 		public final ModelTemplate NoSideAlt;
 
 		ShapeModelTemplates(FrameShape frameShape) {
-			Item = createItemTemplate(frameShape.getPrefix());
-			ItemBlock = createItemBlockTemplate(frameShape.getPrefix());
+			TextureSlot[] slots = switch (frameShape) {
+				case CROSS -> ModTextureSlots.CROSS_SLOTS;
+				case DIAMOND -> ModTextureSlots.DIAMOND_SLOTS;
+				default -> ModTextureSlots.BASIC_SLOTS;
+			};
 
-			Post = createTemplate(frameShape.getPrefix(), "post");
-			Side = createTemplate(frameShape.getPrefix(), "side");
-			SideAlt = createTemplate(frameShape.getPrefix(), "side_alt");
-			NoSide = createTemplate(frameShape.getPrefix(), "no_side");
-			NoSideAlt = createTemplate(frameShape.getPrefix(), "no_side_alt");
+			ItemBlock = createItemBlockTemplate(frameShape.getPrefix(), slots);
+
+			Post = createTemplate(frameShape.getPrefix(), "post", slots);
+			Side = createTemplate(frameShape.getPrefix(), "side", slots);
+			SideAlt = createTemplate(frameShape.getPrefix(), "side_alt", slots);
+			NoSide = createTemplate(frameShape.getPrefix(), "no_side", slots);
+			NoSideAlt = createTemplate(frameShape.getPrefix(), "no_side_alt", slots);
 		}
 
-		private static ModelTemplate createItemTemplate(String shape) {
-			return new ModelTemplate(Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")), Optional.empty(),
-				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
+		private static ModelTemplate createItemTemplate(String shape, TextureSlot[] slots) {
+			return new ModelTemplate(
+				Optional.of(Leadlight.id("item/template_" + shape + "_window_frame")),
+				Optional.empty(),
+				slots);
 		}
 
-		private static ModelTemplate createItemBlockTemplate(String shape) {
-			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_window_frame")), Optional.empty(),
-				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
+		private static ModelTemplate createItemBlockTemplate(String shape, TextureSlot[] slots) {
+			return new ModelTemplate(
+				Optional.of(Leadlight.id("block/template_" + shape + "_window_frame")),
+				Optional.empty(),
+				slots);
 		}
 
-		private static ModelTemplate createTemplate(String shape, String part) {
-			return new ModelTemplate(Optional.of(Leadlight.id("block/template_" + shape + "_window_frame" + "_" + part)), Optional.of("_" + part),
-				ModTextureSlots.POST, ModTextureSlots.BAR, ModTextureSlots.CROSS, ModTextureSlots.DIAMOND);
+		private static ModelTemplate createTemplate(String shape, String part, TextureSlot[] slots) {
+			return new ModelTemplate(
+				Optional.of(Leadlight.id("block/template_" + shape + "_window_frame" + "_" + part)),
+				Optional.of("_" + part),
+				slots);
 		}
 	}
 }

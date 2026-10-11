@@ -23,8 +23,10 @@ public class ModTextureMappings {
 
 	private static TextureMapping createTextureMapping(String material) {
 		return new TextureMapping()
-			.put(ModTextureSlots.POST, createFrameMaterial(material, "post"))
-			.put(ModTextureSlots.BAR, createFrameMaterial(material, "bar"))
+			.put(ModTextureSlots.FRONT, createFrameMaterial(material, "front"))
+			.put(ModTextureSlots.BACK, createFrameMaterial(material, "back"))
+			.put(ModTextureSlots.SIDES, createFrameMaterial(material, "sides"))
+			.put(ModTextureSlots.SURFACE, createFrameMaterial(material, "surface"))
 			.put(ModTextureSlots.CROSS, createFrameMaterial(material, "cross"))
 			.put(ModTextureSlots.DIAMOND, createFrameMaterial(material, "diamond"));
 	}

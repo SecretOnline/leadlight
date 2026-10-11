@@ -1,9 +1,9 @@
 {
   "parent": "leadlight:block/template_vertical_window_frame_no_side",
   "textures": {
-    "bar": "leadlight:block/iron_window_frame_bar",
-    "cross": "leadlight:block/iron_window_frame_cross",
-    "diamond": "leadlight:block/iron_window_frame_diamond",
-    "post": "leadlight:block/iron_window_frame_post"
+    "frame_back": "leadlight:block/iron_window_frame_back",
+    "frame_front": "leadlight:block/iron_window_frame_front",
+    "frame_sides": "leadlight:block/iron_window_frame_sides",
+    "frame_surface": "leadlight:block/iron_window_frame_surface"
   }
 }
