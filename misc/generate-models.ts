@@ -8,7 +8,13 @@ type Shape =
   | "square"
   | "cross"
   | "diamond";
-type Part = "post" | "side" | "side_alt" | "no_side" | "no_side_alt";
+type Part =
+  | "post"
+  | "side"
+  | "side_alt"
+  | "no_side"
+  | "no_side_alt"
+  | "item_extra_elements";
 
 type SimpleModel = {
   textures: Record<string, string>;
@@ -25,7 +31,7 @@ const OUTPUT_DIR = resolve(
   "../common/src/main/resources/assets/leadlight/models/block",
 );
 
-const MAIN_PARTS: Part[] = ["post", "side", "side_alt"];
+const MAIN_PARTS: Part[] = ["post", "side", "side_alt", "item_extra_elements"];
 
 const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
   large: {
@@ -34,6 +40,7 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     side_alt: ["side_s", "bar_ceil_s", "bar_floor_s"],
     no_side: ["no_side_tall_n"],
     no_side_alt: ["no_side_tall_s"],
+    item_extra_elements: [],
   },
   vertical: {
     post: ["center_ceil", "center_floor"],
@@ -41,6 +48,7 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     side_alt: ["side_s", "bar_ceil_s", "bar_floor_s"],
     no_side: ["no_side_tall_n"],
     no_side_alt: ["no_side_tall_s"],
+    item_extra_elements: ["no_side_tall_n", "no_side_tall_s"],
   },
   horizontal: {
     post: ["center_ceil", "center_center", "center_floor"],
@@ -48,6 +56,7 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     side_alt: ["side_s", "bar_ceil_s", "bar_center_s", "bar_floor_s"],
     no_side: ["no_side_top_n", "no_side_bottom_n"],
     no_side_alt: ["no_side_top_s", "no_side_bottom_s"],
+    item_extra_elements: [],
   },
   square: {
     post: ["center_ceil", "center_center", "center_floor"],
@@ -55,6 +64,12 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     side_alt: ["side_s", "bar_ceil_s", "bar_center_s", "bar_floor_s"],
     no_side: ["no_side_top_n", "no_side_bottom_n"],
     no_side_alt: ["no_side_top_s", "no_side_bottom_s"],
+    item_extra_elements: [
+      "no_side_top_n",
+      "no_side_bottom_n",
+      "no_side_top_s",
+      "no_side_bottom_s",
+    ],
   },
   cross: {
     post: ["center_ceil", "center_center", "center_floor"],
@@ -74,6 +89,7 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     ],
     no_side: ["no_side_top_n", "no_side_bottom_n"],
     no_side_alt: ["no_side_top_s", "no_side_bottom_s"],
+    item_extra_elements: [],
   },
   diamond: {
     post: ["center_ceil", "center_floor"],
@@ -93,6 +109,7 @@ const SHAPE_PART_ELEMENTS: Record<Shape, Record<Part, string[]>> = {
     ],
     no_side: ["no_side_tall_n"],
     no_side_alt: ["no_side_tall_s"],
+    item_extra_elements: [],
   },
 };
 
@@ -109,6 +126,10 @@ for (const [shape, parts] of Object.entries(SHAPE_PART_ELEMENTS)) {
       for (const element of elements) {
         mainParts.add(element);
       }
+    }
+
+    if (part === "item_extra_elements") {
+      continue;
     }
 
     const newModel: SimpleModel = {

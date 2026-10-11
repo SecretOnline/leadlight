@@ -8,8 +8,8 @@ public class ModTextureSlots {
 	public static final TextureSlot BACK = TextureSlotAccessor.create("frame_back");
 	public static final TextureSlot SIDES = TextureSlotAccessor.create("frame_sides");
 	public static final TextureSlot SURFACE = TextureSlotAccessor.create("frame_surface");
-	public static final TextureSlot CROSS = TextureSlotAccessor.create("cross");
-	public static final TextureSlot DIAMOND = TextureSlotAccessor.create("diamond");
+	public static final TextureSlot CROSS = TextureSlotAccessor.create("frame_cross");
+	public static final TextureSlot DIAMOND = TextureSlotAccessor.create("frame_diamond");
 
 	public static final TextureSlot[] BASIC_SLOTS = new TextureSlot[]{FRONT, BACK, SIDES, SURFACE};
 	public static final TextureSlot[] CROSS_SLOTS = new TextureSlot[]{FRONT, BACK, SIDES, SURFACE, CROSS};

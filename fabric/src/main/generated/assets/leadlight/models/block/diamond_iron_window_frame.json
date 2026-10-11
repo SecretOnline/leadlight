@@ -1,8 +1,8 @@
 {
   "parent": "leadlight:block/template_diamond_window_frame",
   "textures": {
-    "diamond": "leadlight:block/iron_window_frame_diamond",
     "frame_back": "leadlight:block/iron_window_frame_back",
+    "frame_diamond": "leadlight:block/iron_window_frame_diamond",
     "frame_front": "leadlight:block/iron_window_frame_front",
     "frame_sides": "leadlight:block/iron_window_frame_sides",
     "frame_surface": "leadlight:block/iron_window_frame_surface"

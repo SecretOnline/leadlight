@@ -1,8 +1,8 @@
 {
   "parent": "leadlight:block/template_cross_window_frame_side",
   "textures": {
-    "cross": "leadlight:block/iron_window_frame_cross",
     "frame_back": "leadlight:block/iron_window_frame_back",
+    "frame_cross": "leadlight:block/iron_window_frame_cross",
     "frame_front": "leadlight:block/iron_window_frame_front",
     "frame_sides": "leadlight:block/iron_window_frame_sides",
     "frame_surface": "leadlight:block/iron_window_frame_surface"
