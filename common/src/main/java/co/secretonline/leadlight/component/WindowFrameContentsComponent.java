@@ -4,8 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public record WindowFrameContentsComponent(Optional<DyeColor> centerTop, Optional<DyeColor> centerBottom,
 																					 Optional<DyeColor> northTop, Optional<DyeColor> northBottom,
@@ -69,6 +71,19 @@ public record WindowFrameContentsComponent(Optional<DyeColor> centerTop, Optiona
 		};
 	}
 
+	public void forEach(Consumer<Optional<DyeColor>> consumer) {
+		consumer.accept(centerTop);
+		consumer.accept(centerBottom);
+		consumer.accept(northTop);
+		consumer.accept(northBottom);
+		consumer.accept(eastTop);
+		consumer.accept(eastBottom);
+		consumer.accept(southTop);
+		consumer.accept(southBottom);
+		consumer.accept(westTop);
+		consumer.accept(westBottom);
+	}
+
 	public static final Codec<WindowFrameContentsComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			DyeColor.CODEC.optionalFieldOf("center_top").forGetter(WindowFrameContentsComponent::centerTop),
 			DyeColor.CODEC.optionalFieldOf("center_bottom").forGetter(WindowFrameContentsComponent::centerBottom),
@@ -83,15 +98,29 @@ public record WindowFrameContentsComponent(Optional<DyeColor> centerTop, Optiona
 		.apply(instance, WindowFrameContentsComponent::new));
 
 	public enum Slot {
-		CENTER_TOP,
-		CENTER_BOTTOM,
-		NORTH_TOP,
-		NORTH_BOTTOM,
-		SOUTH_TOP,
-		SOUTH_BOTTOM,
-		EAST_TOP,
-		EAST_BOTTOM,
-		WEST_TOP,
-		WEST_BOTTOM
+		CENTER_TOP(null),
+		CENTER_BOTTOM(null),
+		NORTH_TOP(Direction.NORTH),
+		NORTH_BOTTOM(Direction.NORTH),
+		SOUTH_TOP(Direction.SOUTH),
+		SOUTH_BOTTOM(Direction.SOUTH),
+		EAST_TOP(Direction.EAST),
+		EAST_BOTTOM(Direction.EAST),
+		WEST_TOP(Direction.WEST),
+		WEST_BOTTOM(Direction.WEST);
+
+		private final @Nullable Direction direction;
+
+		Slot(@Nullable Direction direction) {
+			this.direction = direction;
+		}
+
+		public @Nullable Direction getDirection() {
+			return direction;
+		}
+
+		public boolean isDirection(Direction direction) {
+			return this.direction != null && direction == this.direction;
+		}
 	}
 }

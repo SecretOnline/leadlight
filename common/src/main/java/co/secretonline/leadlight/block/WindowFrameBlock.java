@@ -132,6 +132,12 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 			return InteractionResult.CONSUME;
 		}
 
+		// Check this side of the block is connected
+		BooleanProperty directionProperty = PROPERTY_BY_DIRECTION.get(slot.getDirection());
+		if (!state.getValueOrElse(directionProperty, Boolean.FALSE)) {
+			return InteractionResult.CONSUME;
+		}
+
 		// Slot is empty, place it in
 		WindowFrameContentsComponent newContents = contents.with(slot, Optional.of(cutStainedGlassPaneItem.getColor()));
 		windowFrameBlockEntity.setContents(newContents);
@@ -185,36 +191,9 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 		WindowFrameContentsComponent contents = windowFrameBlockEntity.getContents();
 		List<ItemStack> drops = new ArrayList<>(baseDrops);
 
-		if (contents.centerTop().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.centerTop().get())));
-		}
-		if (contents.centerBottom().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.centerBottom().get())));
-		}
-		if (contents.northTop().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.northTop().get())));
-		}
-		if (contents.northBottom().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.northBottom().get())));
-		}
-		if (contents.eastTop().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.eastTop().get())));
-		}
-		if (contents.eastBottom().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.eastBottom().get())));
-		}
-		if (contents.southTop().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.southTop().get())));
-		}
-		if (contents.southBottom().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.southBottom().get())));
-		}
-		if (contents.westTop().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.westTop().get())));
-		}
-		if (contents.westBottom().isPresent()) {
-			drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(contents.westBottom().get())));
-		}
+		contents.forEach(
+			slot -> slot.ifPresent(
+				color -> drops.add(new ItemStack(CutStainedGlassPaneItem.ofColor(color)))));
 
 		return drops;
 	}
