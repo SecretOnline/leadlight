@@ -134,7 +134,7 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 
 		// Check this side of the block is connected
 		BooleanProperty directionProperty = PROPERTY_BY_DIRECTION.get(slot.getDirection());
-		if (!state.getValueOrElse(directionProperty, Boolean.FALSE)) {
+		if (!state.getValueOrElse(directionProperty, Boolean.TRUE)) {
 			return InteractionResult.CONSUME;
 		}
 
