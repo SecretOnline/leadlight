@@ -7,11 +7,7 @@
       "to": [9, 16, 1],
       "rotation": { "angle": 0, "axis": "y", "origin": [8, 8, 8] },
       "faces": {
-        "north": {
-          "uv": [0, 0, 2, 16],
-          "texture": "#frame_sides",
-          "cullface": "north"
-        },
+        "north": { "uv": [0, 0, 2, 16], "texture": "#frame_sides" },
         "east": { "uv": [15, 0, 16, 16], "texture": "#frame_back" },
         "south": { "uv": [2, 0, 4, 16], "texture": "#frame_sides" },
         "west": { "uv": [0, 0, 1, 16], "texture": "#frame_front" },
