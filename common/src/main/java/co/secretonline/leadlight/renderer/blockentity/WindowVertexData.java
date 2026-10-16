@@ -20,7 +20,7 @@ public class WindowVertexData {
 	private static final float TRUE_MID = 8f;
 	private static final float END_MID = 9f;
 	private static final float END = FULL_HEIGHT - START;
-	private static final float DEPTH_OFFSET = 0.95f;
+	private static final float DEPTH_OFFSET = 0f;
 	private static final float START_EDGE = TRUE_MID - DEPTH_OFFSET;
 	private static final float END_EDGE = TRUE_MID + DEPTH_OFFSET;
 
