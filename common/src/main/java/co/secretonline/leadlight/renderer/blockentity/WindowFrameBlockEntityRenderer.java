@@ -39,6 +39,11 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 	}
 
 	@Override
+	public int getViewDistance() {
+		return 128;
+	}
+
+	@Override
 	public @NonNull WindowFrameBlockEntityRenderState createRenderState() {
 		return new WindowFrameBlockEntityRenderState();
 	}
