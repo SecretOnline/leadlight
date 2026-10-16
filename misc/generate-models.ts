@@ -1,13 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { format } from "prettier";
 
 type Shape =
-  | "large"
-  | "vertical"
-  | "horizontal"
-  | "square"
-  | "cross"
-  | "diamond";
+  "large" | "vertical" | "horizontal" | "square" | "cross" | "diamond";
 type Part =
   | "post"
   | "side"
@@ -165,7 +161,8 @@ for (const [shape, parts] of Object.entries(SHAPE_PART_ELEMENTS)) {
     };
 
     console.log(`Writing ${filename}`);
-    await writeFile(resolve(OUTPUT_DIR, filename), JSON.stringify(newModel));
+    const contents = await format(JSON.stringify(newModel), { parser: "json" });
+    await writeFile(resolve(OUTPUT_DIR, filename), contents);
   }
 
   const mainFilename = `template_${shape}_window_frame.json`;
@@ -178,5 +175,6 @@ for (const [shape, parts] of Object.entries(SHAPE_PART_ELEMENTS)) {
   };
 
   console.log(`Writing ${mainFilename}`);
-  await writeFile(resolve(OUTPUT_DIR, mainFilename), JSON.stringify(newModel));
+  const contents = await format(JSON.stringify(newModel), { parser: "json" });
+  await writeFile(resolve(OUTPUT_DIR, mainFilename), contents);
 }
