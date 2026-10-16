@@ -109,6 +109,16 @@ public record WindowFrameContentsComponent(Optional<DyeColor> centerTop, Optiona
 		WEST_TOP(Direction.WEST),
 		WEST_BOTTOM(Direction.WEST);
 
+		public static Slot of(Direction direction, boolean isTop) {
+			return switch (direction) {
+				case NORTH -> isTop ? NORTH_TOP : NORTH_BOTTOM;
+				case EAST -> isTop ? EAST_TOP : EAST_BOTTOM;
+				case SOUTH -> isTop ? SOUTH_TOP : SOUTH_BOTTOM;
+				case WEST -> isTop ? WEST_TOP : WEST_BOTTOM;
+				default -> throw new IllegalStateException("Unexpected value: " + direction);
+			};
+		}
+
 		private final @Nullable Direction direction;
 
 		Slot(@Nullable Direction direction) {

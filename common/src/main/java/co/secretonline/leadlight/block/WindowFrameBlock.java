@@ -303,15 +303,28 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 				if (windowFrameBlockEntity.hasLevel()) {
 					assert windowFrameBlockEntity.getLevel() != null;
 
-					Optional<DyeColor> topColor = windowFrameBlockEntity.getContents().sideTop(directionToNeighbour);
-					topColor.ifPresent(dyeColor -> {
+					WindowFrameContentsComponent initialContents = windowFrameBlockEntity.getContents();
+					WindowFrameContentsComponent currentContents = initialContents;
+
+					Optional<DyeColor> topColor = currentContents.sideTop(directionToNeighbour);
+					if (topColor.isPresent()) {
+						DyeColor dyeColor = topColor.get();
 						Block.popResourceFromFace(
 							windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor)));
-					});
+						currentContents = currentContents.with(WindowFrameContentsComponent.Slot.of(directionToNeighbour, true), Optional.empty());
+					}
 
-					Optional<DyeColor> bottomColor = windowFrameBlockEntity.getContents().sideBottom(directionToNeighbour);
-					bottomColor.ifPresent(dyeColor -> Block.popResourceFromFace(
-						windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor))));
+					Optional<DyeColor> bottomColor = currentContents.sideBottom(directionToNeighbour);
+					if (bottomColor.isPresent()) {
+						DyeColor dyeColor = bottomColor.get();
+						Block.popResourceFromFace(
+							windowFrameBlockEntity.getLevel(), pos, directionToNeighbour, new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor)));
+						currentContents = currentContents.with(WindowFrameContentsComponent.Slot.of(directionToNeighbour, false), Optional.empty());
+					}
+
+					if (currentContents != initialContents) {
+						windowFrameBlockEntity.setContents(currentContents);
+					}
 				}
 
 			}
