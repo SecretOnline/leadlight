@@ -33,6 +33,7 @@ public class ModModelTemplates {
 		public final ModelTemplate SideAlt;
 		public final ModelTemplate NoSide;
 		public final ModelTemplate NoSideAlt;
+		public final ModelTemplate PostOnly;
 
 		ShapeModelTemplates(FrameShape frameShape) {
 			TextureSlot[] slots = switch (frameShape) {
@@ -48,6 +49,7 @@ public class ModModelTemplates {
 			SideAlt = createTemplate(frameShape.getPrefix(), "side_alt", slots);
 			NoSide = createTemplate(frameShape.getPrefix(), "no_side", slots);
 			NoSideAlt = createTemplate(frameShape.getPrefix(), "no_side_alt", slots);
+			PostOnly = createTemplate(frameShape.getPrefix(), "post_only", slots);
 		}
 
 		private static ModelTemplate createItemTemplate(String shape, TextureSlot[] slots) {

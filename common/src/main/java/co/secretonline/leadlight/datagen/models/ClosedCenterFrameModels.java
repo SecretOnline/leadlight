@@ -28,12 +28,19 @@ public class ClosedCenterFrameModels extends BaseFrameModels {
 		MultiVariant sideAlt = plainVariant(modelTemplates.SideAlt.create(block, textureMapping, this.modelOutput));
 		MultiVariant noSide = plainVariant(modelTemplates.NoSide.create(block, textureMapping, this.modelOutput));
 		MultiVariant noSideAlt = plainVariant(modelTemplates.NoSideAlt.create(block, textureMapping, this.modelOutput));
+		MultiVariant postOnly = plainVariant(modelTemplates.PostOnly.create(block, textureMapping, this.modelOutput));
 
 		modelTemplates.ItemBlock.create(block, textureMapping, this.modelOutput);
 
 		return MultiPartGenerator.multiPart(block)
 			// Central bits are always there
 			.with(post)
+			// Closed center models also have the central vertical center filled when there are no side connections
+			.with(condition()
+				.term(BlockStateProperties.NORTH, false)
+				.term(BlockStateProperties.EAST, false)
+				.term(BlockStateProperties.SOUTH, false)
+				.term(BlockStateProperties.WEST, false), postOnly)
 			// Add side parts to sides
 			.with(condition().term(BlockStateProperties.NORTH, true), side)
 			.with(condition().term(BlockStateProperties.EAST, true), side.with(Y_ROT_90))

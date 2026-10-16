@@ -7,6 +7,17 @@
     },
     {
       "apply": {
+        "model": "leadlight:block/square_iron_window_frame_post_only"
+      },
+      "when": {
+        "east": "false",
+        "north": "false",
+        "south": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
         "model": "leadlight:block/square_iron_window_frame_side"
       },
       "when": {
