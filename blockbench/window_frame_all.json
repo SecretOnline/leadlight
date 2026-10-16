@@ -216,7 +216,7 @@
 				"east": {"uv": [1, 15, 7, 16], "texture": "#frame_back"},
 				"west": {"uv": [9, 15, 15, 16], "texture": "#frame_front"},
 				"up": {"uv": [8, 9, 10, 15], "texture": "#7"},
-				"down": {"uv": [10, 9, 12, 15], "texture": "#7", "cullface": "down"}
+				"down": {"uv": [10, 9, 12, 15], "texture": "#7"}
 			}
 		},
 		{
