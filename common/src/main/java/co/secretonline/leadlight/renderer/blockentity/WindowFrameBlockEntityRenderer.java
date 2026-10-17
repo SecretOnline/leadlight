@@ -102,8 +102,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 		// Collect center faces for any center
 		if (renderState.frameShape.hasCenterTopSlot() || renderState.frameShape.hasCenterBottomSlot()) {
 			CenterCollector centerCollector = switch (renderState.frameShape) {
-				case LARGE, CROSS -> WindowFrameBlockEntityRenderer::collectLargeFrameCenterVertexData;
-				case HORIZONTAL, DIAMOND -> WindowFrameBlockEntityRenderer::collectHorizontalFrameCenterVertexData;
+				case LARGE, DIAMOND -> WindowFrameBlockEntityRenderer::collectLargeFrameCenterVertexData;
+				case HORIZONTAL, CROSS -> WindowFrameBlockEntityRenderer::collectHorizontalFrameCenterVertexData;
 				default -> null;
 			};
 			if (centerCollector != null && renderState.connections.isEmpty()) {
@@ -132,8 +132,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectOpenCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.FULL_STANDARD, WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE, WindowVertexData.VERTICAL_LEFT_OUTSIDE,
-				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_OUTSIDE_OPPOSITE);
+				WindowVertexData.FULL_STANDARD, WindowVertexData.VERTICAL_LEFT_STANDARD,
+				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE);
 		}
 	}
 
@@ -150,8 +150,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectClosedCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.VERTICAL_LEFT_STANDARD, WindowVertexData.VERTICAL_LEFT_INSIDE,
-				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE, WindowVertexData.VERTICAL_RIGHT_INSIDE_OPPOSITE);
+				WindowVertexData.VERTICAL_LEFT_STANDARD,
+				WindowVertexData.VERTICAL_RIGHT_STANDARD_OPPOSITE);
 		}
 	}
 
@@ -163,8 +163,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectOpenCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.HORIZONTAL_TOP_FULL, WindowVertexData.SQUARE_TOP_LEFT_STANDARD, WindowVertexData.SQUARE_TOP_LEFT_INSIDE, WindowVertexData.SQUARE_TOP_LEFT_OUTSIDE,
-				WindowVertexData.SQUARE_TOP_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_TOP_RIGHT_INSIDE_OPPOSITE, WindowVertexData.SQUARE_TOP_RIGHT_OUTSIDE_OPPOSITE);
+				WindowVertexData.HORIZONTAL_TOP_FULL, WindowVertexData.SQUARE_TOP_LEFT_STANDARD,
+				WindowVertexData.SQUARE_TOP_RIGHT_STANDARD_OPPOSITE);
 		}
 
 		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.centerBottom();
@@ -174,8 +174,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectOpenCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.HORIZONTAL_BOTTOM_FULL, WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD, WindowVertexData.SQUARE_BOTTOM_LEFT_INSIDE, WindowVertexData.SQUARE_BOTTOM_LEFT_OUTSIDE,
-				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_OUTSIDE_OPPOSITE);
+				WindowVertexData.HORIZONTAL_BOTTOM_FULL, WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD,
+				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE);
 		}
 	}
 
@@ -195,8 +195,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectClosedCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.SQUARE_TOP_LEFT_STANDARD, WindowVertexData.SQUARE_TOP_LEFT_INSIDE,
-				WindowVertexData.SQUARE_TOP_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_TOP_RIGHT_INSIDE_OPPOSITE);
+				WindowVertexData.SQUARE_TOP_LEFT_STANDARD,
+				WindowVertexData.SQUARE_TOP_RIGHT_STANDARD_OPPOSITE);
 		}
 
 		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.sideBottom(direction);
@@ -206,8 +206,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectClosedCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD, WindowVertexData.SQUARE_BOTTOM_LEFT_INSIDE,
-				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.SQUARE_BOTTOM_RIGHT_INSIDE_OPPOSITE);
+				WindowVertexData.SQUARE_BOTTOM_LEFT_STANDARD,
+				WindowVertexData.SQUARE_BOTTOM_RIGHT_STANDARD_OPPOSITE);
 		}
 	}
 
@@ -219,8 +219,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectOpenCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.CROSS_TOP_FULL, WindowVertexData.CROSS_TOP_LEFT_STANDARD, WindowVertexData.CROSS_TOP_LEFT_INSIDE, WindowVertexData.CROSS_TOP_LEFT_OUTSIDE,
-				WindowVertexData.CROSS_TOP_RIGHT_STANDARD_OPPOSITE, WindowVertexData.CROSS_TOP_RIGHT_INSIDE_OPPOSITE, WindowVertexData.CROSS_TOP_RIGHT_OUTSIDE_OPPOSITE);
+				WindowVertexData.CROSS_TOP_FULL, WindowVertexData.CROSS_TOP_LEFT_STANDARD,
+				WindowVertexData.CROSS_TOP_RIGHT_STANDARD_OPPOSITE);
 		}
 
 		Optional<DyeColor> bottomColorOptional = renderState.windowFrameContents.centerBottom();
@@ -230,8 +230,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectOpenCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.CROSS_BOTTOM_FULL, WindowVertexData.CROSS_BOTTOM_LEFT_STANDARD, WindowVertexData.CROSS_BOTTOM_LEFT_INSIDE, WindowVertexData.CROSS_BOTTOM_LEFT_OUTSIDE,
-				WindowVertexData.CROSS_BOTTOM_RIGHT_STANDARD_OPPOSITE, WindowVertexData.CROSS_BOTTOM_RIGHT_INSIDE_OPPOSITE, WindowVertexData.CROSS_BOTTOM_RIGHT_OUTSIDE_OPPOSITE);
+				WindowVertexData.CROSS_BOTTOM_FULL, WindowVertexData.CROSS_BOTTOM_LEFT_STANDARD,
+				WindowVertexData.CROSS_BOTTOM_RIGHT_STANDARD_OPPOSITE);
 		}
 
 		Optional<DyeColor> sideColorOptional = renderState.windowFrameContents.sideTop(direction);
@@ -253,8 +253,8 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 			Consumer<WindowVertexData> vertexConsumer = vertexData -> output.accept(color, vertexData.withDirection(direction));
 
 			collectOpenCenter(renderState.connections, direction, vertexConsumer,
-				WindowVertexData.DIAMOND_CENTER_FULL, WindowVertexData.DIAMOND_CENTER_LEFT_STANDARD, WindowVertexData.DIAMOND_CENTER_LEFT_INSIDE, WindowVertexData.DIAMOND_CENTER_LEFT_OUTSIDE,
-				WindowVertexData.DIAMOND_CENTER_RIGHT_STANDARD_OPPOSITE, WindowVertexData.DIAMOND_CENTER_RIGHT_INSIDE_OPPOSITE, WindowVertexData.DIAMOND_CENTER_RIGHT_OUTSIDE_OPPOSITE);
+				WindowVertexData.DIAMOND_CENTER_FULL, WindowVertexData.DIAMOND_CENTER_LEFT_STANDARD,
+				WindowVertexData.DIAMOND_CENTER_RIGHT_STANDARD_OPPOSITE);
 		}
 
 		Optional<DyeColor> sideTopColorOptional = renderState.windowFrameContents.sideTop(direction);
@@ -279,63 +279,37 @@ public class WindowFrameBlockEntityRenderer implements BlockEntityRenderer<Windo
 	}
 
 	private static void collectOpenCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
-																				WindowVertexData frontFull, WindowVertexData frontHalf, WindowVertexData frontInner, WindowVertexData frontOuter,
-																				WindowVertexData backHalf, WindowVertexData backInner, WindowVertexData backOuter) {
+																				WindowVertexData frontFull, WindowVertexData frontHalf,
+																				WindowVertexData backHalf) {
 		Direction front = direction.getCounterClockWise();
 		Direction opposite = direction.getOpposite();
 		Direction back = direction.getClockWise();
 
+		boolean isFullCross = connections.has(front) && connections.has(opposite) && connections.has(back);
+
 		// Front faces
-		if (connections.has(front)) {
-			output.accept(frontInner);
+		if (isFullCross) {
+			// Revert to smaller segments when  it's a cross to avoid fighting issues.
+			output.accept(frontHalf);
 		} else if (connections.has(opposite)) {
 			output.accept(frontFull);
-		} else if (connections.has(back)) {
-			output.accept(frontOuter);
 		} else {
 			output.accept(frontHalf);
 		}
 
 		// Back faces.
-		if (connections.has(back)) {
-			output.accept(backInner);
-		} else if (connections.has(opposite)) {
-			// Don't render back face if the center is open, as this will be handled by the opposite front face.
-		} else if (connections.has(front)) {
-			output.accept(backOuter);
-		} else {
+		// Don't render back face if the center is open, as this will be handled by the opposite front face.
+		// However if it's a full cross then we do need to render the back face ourselves.
+		if (isFullCross || !connections.has(opposite)) {
 			output.accept(backHalf);
 		}
 	}
 
 	private static void collectClosedCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
-																					WindowVertexData front, WindowVertexData back) {
-		collectClosedCenter(connections, direction, output, front, front, back, back);
-	}
-	private static void collectClosedCenter(@NonNull ConnectionInfo connections, @NonNull Direction direction, Consumer<WindowVertexData> output,
-																					WindowVertexData frontHalf, WindowVertexData frontInner,
-																					WindowVertexData backHalf, WindowVertexData backInner) {
-		Direction front = direction.getCounterClockWise();
-		Direction opposite = direction.getOpposite();
-		Direction back = direction.getClockWise();
-
-		// Front faces
-		if (connections.has(front)) {
-			output.accept(frontInner);
-		} else if (connections.has(opposite) || connections.has(back)) {
-			output.accept(frontInner);
-		} else {
-			output.accept(frontHalf);
-		}
-
-		// Back faces.
-		if (connections.has(back)) {
-			output.accept(backInner);
-		} else if (connections.has(opposite) || connections.has(front)) {
-			output.accept(backInner);
-		} else {
-			output.accept(backHalf);
-		}
+																					WindowVertexData frontHalf,
+																					WindowVertexData backHalf) {
+		output.accept(frontHalf);
+		output.accept(backHalf);
 	}
 
 	@FunctionalInterface
