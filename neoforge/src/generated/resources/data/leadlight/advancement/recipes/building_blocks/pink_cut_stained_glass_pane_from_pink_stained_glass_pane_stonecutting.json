@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_lime_stained_glass_pane": {
+    "has_pink_stained_glass_pane": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:lime_stained_glass_pane"
+            "items": "minecraft:pink_stained_glass_pane"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lime_cut_stained_glass_pane_from_lime_stained_glass_pane_stonecutting"
+        "recipe": "leadlight:pink_cut_stained_glass_pane_from_pink_stained_glass_pane_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_lime_stained_glass_pane"
+      "has_pink_stained_glass_pane"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lime_cut_stained_glass_pane_from_lime_stained_glass_pane_stonecutting"
+      "leadlight:pink_cut_stained_glass_pane_from_pink_stained_glass_pane_stonecutting"
     ]
   }
 }

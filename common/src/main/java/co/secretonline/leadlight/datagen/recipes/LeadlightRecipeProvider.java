@@ -7,16 +7,21 @@ import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.item.CutStainedGlassPaneItem;
 import co.secretonline.leadlight.item.ModItems;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -110,9 +115,17 @@ public class LeadlightRecipeProvider extends RecipeProvider {
 	private void buildCutStainedGlassPaneRecipes() {
 		ModItems.CUT_STAINED_GLASS_PANES.forEach(supplier -> {
 			CutStainedGlassPaneItem item = supplier.get();
-			stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, item, item.getPaneBlock(), 4);
+			Block pane = item.getPaneBlock();
 
-			var builder = shaped(RecipeCategory.BUILDING_BLOCKS, item.getPaneBlock(), 1)
+			var cutBuilder = SingleItemRecipeBuilder
+				.stonecutting(Ingredient.of(pane), RecipeCategory.BUILDING_BLOCKS, item, 4)
+				.unlockedBy(getHasName(pane), this.has(pane));
+			ResourceKey<Recipe<?>> cutKey = ResourceKey.create(
+				Registries.RECIPE,
+				Leadlight.id(getConversionRecipeName(item, pane) + "_stonecutting"));
+			cutBuilder.save(output, cutKey);
+
+			var builder = shaped(RecipeCategory.BUILDING_BLOCKS, pane, 1)
 				.define('c', item)
 				.pattern("cc")
 				.pattern("cc")

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_brown_stained_glass_pane": {
+    "has_blue_stained_glass_pane": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:brown_stained_glass_pane"
+            "items": "minecraft:blue_stained_glass_pane"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:brown_cut_stained_glass_pane_from_brown_stained_glass_pane_stonecutting"
+        "recipe": "leadlight:blue_cut_stained_glass_pane_from_blue_stained_glass_pane_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_brown_stained_glass_pane"
+      "has_blue_stained_glass_pane"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:brown_cut_stained_glass_pane_from_brown_stained_glass_pane_stonecutting"
+      "leadlight:blue_cut_stained_glass_pane_from_blue_stained_glass_pane_stonecutting"
     ]
   }
 }
