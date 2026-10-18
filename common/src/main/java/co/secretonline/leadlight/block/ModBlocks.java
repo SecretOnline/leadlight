@@ -47,11 +47,6 @@ public class ModBlocks {
 					.noOcclusion()
 					.setId(blockItemId.block())));
 
-			Supplier<MapCodec<? extends BaseEntityBlock>> mapCodec = ServerServiceLoader.REGISTRY.register(
-				BuiltInRegistries.BLOCK_TYPE,
-				blockItemId.block().identifier(),
-				() -> block.get().codec());
-
 			Supplier<Item> item = ServerServiceLoader.REGISTRY.register(
 				BuiltInRegistries.ITEM,
 				blockItemId.item().identifier(),

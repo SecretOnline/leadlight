@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -16,20 +17,12 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class NeoForgeModLootTableProvider extends BlockLootSubProvider {
-	public NeoForgeModLootTableProvider(HolderLookup.Provider provider) {
-		super(Set.of(), FeatureFlags.DEFAULT_FLAGS, provider);
+	public NeoForgeModLootTableProvider(LootTableSubProvider.Context context) {
+		super(Set.of(), FeatureFlags.DEFAULT_FLAGS, context);
 	}
 
-	public static LootTableProvider get(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		return new LootTableProvider(output, Set.of(),
-			List.of(
-				new LootTableProvider.SubProviderEntry(
-					NeoForgeModLootTableProvider::new,
-					LootContextParamSets.BLOCK
-				)
-			),
-			lookupProvider
-		);
+	public static LootTableProvider.SubProviderEntry get() {
+		return new LootTableProvider.SubProviderEntry(NeoForgeModLootTableProvider::new, LootContextParamSets.BLOCK);
 	}
 
 	@Override

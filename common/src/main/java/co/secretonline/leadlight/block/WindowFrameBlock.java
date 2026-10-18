@@ -7,11 +7,11 @@ import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.item.CutStainedGlassPaneItem;
 import co.secretonline.leadlight.sound.ModSounds;
 import co.secretonline.leadlight.tag.ModBlockTags;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
@@ -53,8 +53,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
-	private MapCodec<WindowFrameBlock> CODEC;
-
 	public static final BooleanProperty NORTH = PipeBlock.NORTH;
 	public static final BooleanProperty EAST = PipeBlock.EAST;
 	public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -166,7 +164,7 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 		DyeColor dyeColor = slotContent.get();
 		ItemStack item = new ItemStack(CutStainedGlassPaneItem.ofColor(dyeColor));
 		if (!player.addItem(item)) {
-			player.drop(item, false);
+			player.drop(item, false, Prediction.PREDICTED);
 		}
 
 		WindowFrameContentsComponent newContents = contents.with(slot, Optional.empty());
@@ -371,14 +369,5 @@ public class WindowFrameBlock extends BaseEntityBlock implements SimpleWaterlogg
 	@Override
 	public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
 		return new WindowFrameBlockEntity(blockPos, blockState);
-	}
-
-	@Override
-	public @NonNull MapCodec<? extends BaseEntityBlock> codec() {
-		if (CODEC == null) {
-			CODEC = simpleCodec((properties) -> new WindowFrameBlock(frameMaterial, frameShape, properties));
-		}
-
-		return CODEC;
 	}
 }

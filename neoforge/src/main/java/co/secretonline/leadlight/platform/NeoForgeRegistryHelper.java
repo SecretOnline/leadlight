@@ -20,7 +20,6 @@ import java.util.function.Supplier;
 
 public class NeoForgeRegistryHelper implements RegistryHelper {
 	public static final DeferredRegister<Block> BLOCK = DeferredRegister.create(BuiltInRegistries.BLOCK, Leadlight.MOD_ID);
-	public static final DeferredRegister<MapCodec<? extends Block>> BLOCK_TYPE = DeferredRegister.create(BuiltInRegistries.BLOCK_TYPE, Leadlight.MOD_ID);
 	public static final DeferredRegister<BlockEntityType<? extends BlockEntity>> BLOCK_ENTITY_TYPE = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Leadlight.MOD_ID);
 	public static final DeferredRegister<Item> ITEM = DeferredRegister.create(BuiltInRegistries.ITEM, Leadlight.MOD_ID);
 	public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPE = DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, Leadlight.MOD_ID);
@@ -30,7 +29,6 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 
 	public void registerToBus(IEventBus modBus) {
 		BLOCK.register(modBus);
-		BLOCK_TYPE.register(modBus);
 		BLOCK_ENTITY_TYPE.register(modBus);
 		ITEM.register(modBus);
 		DATA_COMPONENT_TYPE.register(modBus);
@@ -43,9 +41,6 @@ public class NeoForgeRegistryHelper implements RegistryHelper {
 	private static <T> DeferredRegister<T> deferredRegisterFor(Registry<T> registry) {
 		if (registryEquals(registry, BuiltInRegistries.BLOCK)) {
 			return (DeferredRegister<T>) BLOCK;
-		}
-		if (registryEquals(registry, BuiltInRegistries.BLOCK_TYPE)) {
-			return (DeferredRegister<T>) BLOCK_TYPE;
 		}
 		if (registryEquals(registry, BuiltInRegistries.BLOCK_ENTITY_TYPE)) {
 			return (DeferredRegister<T>) BLOCK_ENTITY_TYPE;

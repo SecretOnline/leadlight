@@ -14,6 +14,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,8 +30,8 @@ import java.util.stream.Collectors;
 public class LeadlightRecipeProvider extends RecipeProvider {
 	private final NeededTags tags;
 
-	public LeadlightRecipeProvider(NeededTags tags, HolderLookup.Provider registries, RecipeOutput output) {
-		super(registries, output);
+	public LeadlightRecipeProvider(NeededTags tags, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+		super(recipes, advancements);
 		this.tags = tags;
 	}
 
