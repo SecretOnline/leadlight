@@ -6,13 +6,11 @@ import co.secretonline.leadlight.tag.ModBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import org.jspecify.annotations.NonNull;
 
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
+import java.util.function.Function;
 
 public class NeoForgeBlockTagProvider extends BlockTagsProvider {
 	public NeoForgeBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -21,7 +19,7 @@ public class NeoForgeBlockTagProvider extends BlockTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider provider) {
-		tag(ModBlockTags.WINDOW_FRAME).addAll(ModBlocks.ALL_FRAME_BLOCKS.get().map(block -> block));
+		tag(ModBlockTags.WINDOW_FRAME).addAll(ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get().map(Function.identity()));
 
 		tag(BlockTags.BARS).addTag(ModBlockTags.WINDOW_FRAME);
 	}

@@ -3,75 +3,65 @@ package co.secretonline.leadlight.block;
 import co.secretonline.leadlight.Leadlight;
 import co.secretonline.leadlight.component.ModComponents;
 import co.secretonline.leadlight.component.WindowFrameContentsComponent;
+import co.secretonline.leadlight.data.BlockItemId;
 import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
+import co.secretonline.leadlight.data.FrameShapeCollection;
 import co.secretonline.leadlight.platform.ServerServiceLoader;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import org.jspecify.annotations.NonNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class ModBlocks {
-	public static final Supplier<WindowFrameBlock> LARGE_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.LARGE);
-	public static final Supplier<WindowFrameBlock> VERTICAL_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.VERTICAL);
-	public static final Supplier<WindowFrameBlock> HORIZONTAL_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.HORIZONTAL);
-	public static final Supplier<WindowFrameBlock> SQUARE_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.SQUARE);
-	public static final Supplier<WindowFrameBlock> CROSS_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.CROSS);
-	public static final Supplier<WindowFrameBlock> DIAMOND_IRON_WINDOW_FRAME_BLOCK = registerWindowFrameBlock(FrameMaterial.IRON, FrameShape.DIAMOND);
+	public static final FrameShapeCollection<BlockItemId> IRON_WINDOW_FRAME_BLOCK_ITEM_IDS = createKeys(FrameMaterial.IRON);
+	public static final FrameShapeCollection<Supplier<WindowFrameBlock>> IRON_WINDOW_FRAMES = FrameShapeCollection.zipMap(FrameShapeCollection.SHAPES, IRON_WINDOW_FRAME_BLOCK_ITEM_IDS, registerWindowFrame(FrameMaterial.IRON));
 
-	public static final Supplier<Stream<WindowFrameBlock>> ALL_FRAME_BLOCKS = () -> Stream.of(
-		LARGE_IRON_WINDOW_FRAME_BLOCK.get(),
-		VERTICAL_IRON_WINDOW_FRAME_BLOCK.get(),
-		HORIZONTAL_IRON_WINDOW_FRAME_BLOCK.get(),
-		SQUARE_IRON_WINDOW_FRAME_BLOCK.get(),
-		CROSS_IRON_WINDOW_FRAME_BLOCK.get(),
-		DIAMOND_IRON_WINDOW_FRAME_BLOCK.get()
-	);
+	// TODO: Stream.concat() when there are more material types
+	public static final Stream<BlockItemId> ALL_WINDOW_FRAME_BLOCK_ITEM_IDS = IRON_WINDOW_FRAME_BLOCK_ITEM_IDS.stream();
+	public static final Supplier<Stream<WindowFrameBlock>> ALL_WINDOW_FRAME_BLOCKS = () -> IRON_WINDOW_FRAMES.stream().map(Supplier::get);
 
-	private static Supplier<WindowFrameBlock> registerWindowFrameBlock(FrameMaterial material, FrameShape shape) {
-		Identifier id = Leadlight.id(shape.getPrefix() + "_" + material.getPrefix() + "_window_frame");
-		ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
-		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
+	public static FrameShapeCollection<BlockItemId> createKeys(FrameMaterial material) {
+		return FrameShapeCollection.SHAPES.map((shape) -> {
+			Identifier id = Leadlight.id(shape.getPrefix() + "_" + material.name() + "_window_frame");
+			return BlockItemId.create(id, id);
+		});
+	}
 
-		Supplier<WindowFrameBlock> block = ServerServiceLoader.REGISTRY.register(
-			BuiltInRegistries.BLOCK,
-			id,
-			() -> new WindowFrameBlock(material, shape, BlockBehaviour.Properties.of()
-				.instrument(NoteBlockInstrument.HAT)
-				.strength(0.3F)
-				.sound(SoundType.IRON)
-				.noOcclusion()
-				.setId(blockKey)));
+	public static BiFunction<FrameShape, BlockItemId, Supplier<WindowFrameBlock>> registerWindowFrame(FrameMaterial material) {
+		return (shape, blockItemId) -> {
+			Supplier<WindowFrameBlock> block = ServerServiceLoader.REGISTRY.register(
+				BuiltInRegistries.BLOCK,
+				blockItemId.block().identifier(),
+				() -> new WindowFrameBlock(material, shape, BlockBehaviour.Properties.of()
+					.instrument(material.instrument())
+					.strength(0.3F)
+					.sound(material.soundType())
+					.noOcclusion()
+					.setId(blockItemId.block())));
 
-		Supplier<MapCodec<? extends BaseEntityBlock>> mapCodec = ServerServiceLoader.REGISTRY.register(
-			BuiltInRegistries.BLOCK_TYPE,
-			id,
-			() -> block.get().codec());
+			Supplier<MapCodec<? extends BaseEntityBlock>> mapCodec = ServerServiceLoader.REGISTRY.register(
+				BuiltInRegistries.BLOCK_TYPE,
+				blockItemId.block().identifier(),
+				() -> block.get().codec());
 
-		Supplier<Item> item = ServerServiceLoader.REGISTRY.register(
-			BuiltInRegistries.ITEM,
-			id,
-			()-> new BlockItem(block.get(), new Item.Properties()
-				.useBlockDescriptionPrefix()
-				.component(ModComponents.WINDOW_FRAME_CONTENTS.get(), WindowFrameContentsComponent.empty())
-				.setId(itemKey)));
+			Supplier<Item> item = ServerServiceLoader.REGISTRY.register(
+				BuiltInRegistries.ITEM,
+				blockItemId.item().identifier(),
+				() -> new BlockItem(block.get(), new Item.Properties()
+					.useBlockDescriptionPrefix()
+					.component(ModComponents.WINDOW_FRAME_CONTENTS.get(), WindowFrameContentsComponent.empty())
+					.setId(blockItemId.item())));
 
-		return block;
+			return block;
+		};
 	}
 
 	public static void initialize() {

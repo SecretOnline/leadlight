@@ -14,7 +14,9 @@ public class ModBlockEntities {
 		BuiltInRegistries.BLOCK_ENTITY_TYPE,
 		Leadlight.id("window_frame"),
 		() -> ServerServiceLoader.PLATFORM_REGISTRATION
-			.createBlockEntityType(WindowFrameBlockEntity::new, ModBlocks.ALL_FRAME_BLOCKS.get().toArray(Block[]::new)));
+			.createBlockEntityType(
+				WindowFrameBlockEntity::new,
+				ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get().toArray(Block[]::new)));
 
 	public static void initialize() {
 	}

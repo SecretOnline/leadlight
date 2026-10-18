@@ -8,13 +8,8 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.resources.model.sprite.Material;
 
 public class ModTextureMappings {
-	public static final TextureMapping IRON = createTextureMapping("iron");
-
-
 	public static TextureMapping ofMaterial(FrameMaterial frameMaterial) {
-		return switch (frameMaterial) {
-			case IRON ->  IRON;
-		};
+		return createTextureMapping(frameMaterial.getSerializedName());
 	}
 
 	private static Material createFrameMaterial(String material, String part) {

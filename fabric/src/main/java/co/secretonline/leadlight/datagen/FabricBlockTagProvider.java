@@ -9,15 +9,16 @@ import net.minecraft.tags.BlockTags;
 import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 public class FabricBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 	public FabricBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-	super(output, registriesFuture);
-}
+		super(output, registriesFuture);
+	}
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
-		valueLookupBuilder(ModBlockTags.WINDOW_FRAME).addAll(ModBlocks.ALL_FRAME_BLOCKS.get().map(block -> block));
+		valueLookupBuilder(ModBlockTags.WINDOW_FRAME).addAll(ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get().map(Function.identity()));
 
 		valueLookupBuilder(BlockTags.BARS).addTag(ModBlockTags.WINDOW_FRAME);
 	}

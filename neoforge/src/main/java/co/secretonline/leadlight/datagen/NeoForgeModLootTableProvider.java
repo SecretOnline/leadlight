@@ -42,6 +42,6 @@ public class NeoForgeModLootTableProvider extends BlockLootSubProvider {
 
 	@Override
 	protected void generate() {
-		ModBlocks.ALL_FRAME_BLOCKS.get().forEach(this::dropSelf);
+		ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get().forEach(this::dropSelf);
 	}
 }

@@ -5,10 +5,9 @@ import co.secretonline.leadlight.block.ModBlocks;
 import co.secretonline.leadlight.block.WindowFrameBlock;
 import co.secretonline.leadlight.data.FrameMaterial;
 import co.secretonline.leadlight.data.FrameShape;
+import co.secretonline.leadlight.item.CutStainedGlassPaneItem;
 import co.secretonline.leadlight.item.ModItems;
-import co.secretonline.leadlight.tag.ModItemTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -37,78 +36,80 @@ public class LeadlightRecipeProvider extends RecipeProvider {
 	}
 
 	private void buildFrameRecipes() {
-		Map<FrameMaterial, WindowFrameBlock> largeFrames = ModBlocks.ALL_FRAME_BLOCKS.get()
+		Map<FrameMaterial, WindowFrameBlock> largeFrames = ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get()
 			.filter(block -> block.getFrameShape() == FrameShape.LARGE)
 			.collect(Collectors.toMap(WindowFrameBlock::getFrameMaterial, block -> block));
 
-		ModBlocks.ALL_FRAME_BLOCKS.get().forEach(block -> {
-			FrameShape shape = block.getFrameShape();
-			FrameMaterial material = block.getFrameMaterial();
-			ItemLike recipeMaterial = material.getCraftingMaterial();
+		ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get()
+			.forEach(block -> {
+				FrameShape shape = block.getFrameShape();
+				FrameMaterial material = block.getFrameMaterial();
+				ItemLike recipeMaterial = material.craftingMaterial();
 
-			WindowFrameBlock largeFrame = largeFrames.get(material);
-			if (largeFrame == null) {
-				throw new UnsupportedOperationException("Missing LARGE frame for material " + material.getSerializedName());
-			}
+				WindowFrameBlock largeFrame = largeFrames.get(material);
+				if (largeFrame == null) {
+					throw new UnsupportedOperationException("Missing LARGE frame for material " + material.getSerializedName());
+				}
 
-			switch (shape) {
-				case LARGE -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 2)
-					.define('m', recipeMaterial)
-					.pattern("mmm")
-					.pattern("m m")
-					.pattern("mmm")
-					.unlockedBy("has_material", has(recipeMaterial))
-					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
-					.save(output);
-				case VERTICAL -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
-					.define('f', largeFrame)
-					.define('m', recipeMaterial)
-					.pattern("m")
-					.pattern("f")
-					.pattern("m")
-					.unlockedBy("has_material", has(recipeMaterial))
-					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
-					.save(output);
-				case HORIZONTAL -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
-					.define('f', largeFrame)
-					.define('m', recipeMaterial)
-					.pattern("mfm")
-					.unlockedBy("has_material", has(recipeMaterial))
-					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
-					.save(output);
-				case SQUARE -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
-					.define('f', largeFrame)
-					.define('m', recipeMaterial)
-					.pattern(" m ")
-					.pattern("mfm")
-					.pattern(" m ")
-					.unlockedBy("has_material", has(recipeMaterial))
-					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
-					.save(output);
-				case CROSS -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
-					.define('f', largeFrame)
-					.define('m', recipeMaterial)
-					.pattern("m m")
-					.pattern(" f ")
-					.pattern("m m")
-					.unlockedBy("has_material", has(recipeMaterial))
-					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
-					.save(output);
-				case DIAMOND -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
-					.define('f', largeFrame)
-					.define('m', recipeMaterial)
-					.pattern("mmm")
-					.pattern("mfm")
-					.pattern("mmm")
-					.unlockedBy("has_material", has(recipeMaterial))
-					.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
-					.save(output);
-			}
-		});
+				switch (shape) {
+					case LARGE -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 2)
+						.define('m', recipeMaterial)
+						.pattern("mmm")
+						.pattern("m m")
+						.pattern("mmm")
+						.unlockedBy("has_material", has(recipeMaterial))
+						.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+						.save(output);
+					case VERTICAL -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+						.define('f', largeFrame)
+						.define('m', recipeMaterial)
+						.pattern("m")
+						.pattern("f")
+						.pattern("m")
+						.unlockedBy("has_material", has(recipeMaterial))
+						.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+						.save(output);
+					case HORIZONTAL -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+						.define('f', largeFrame)
+						.define('m', recipeMaterial)
+						.pattern("mfm")
+						.unlockedBy("has_material", has(recipeMaterial))
+						.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+						.save(output);
+					case SQUARE -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+						.define('f', largeFrame)
+						.define('m', recipeMaterial)
+						.pattern(" m ")
+						.pattern("mfm")
+						.pattern(" m ")
+						.unlockedBy("has_material", has(recipeMaterial))
+						.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+						.save(output);
+					case CROSS -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+						.define('f', largeFrame)
+						.define('m', recipeMaterial)
+						.pattern("m m")
+						.pattern(" f ")
+						.pattern("m m")
+						.unlockedBy("has_material", has(recipeMaterial))
+						.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+						.save(output);
+					case DIAMOND -> shaped(RecipeCategory.BUILDING_BLOCKS, block, 1)
+						.define('f', largeFrame)
+						.define('m', recipeMaterial)
+						.pattern("mmm")
+						.pattern("mfm")
+						.pattern("mmm")
+						.unlockedBy("has_material", has(recipeMaterial))
+						.unlockedBy("has_stained_glass_pane", has(tags.glassPanes()))
+						.save(output);
+				}
+			});
 	}
 
 	private void buildCutStainedGlassPaneRecipes() {
-		ModItems.ALL_CUT_STAINED_GLASS_PANE_ITEMS.get().forEach(item -> {
+		ModItems.CUT_STAINED_GLASS_PANES.forEach(supplier -> {
+			CutStainedGlassPaneItem item = supplier.get();
 			stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, item, item.getPaneBlock(), 4);
 
 			var builder = shaped(RecipeCategory.BUILDING_BLOCKS, item.getPaneBlock(), 1)

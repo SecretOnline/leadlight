@@ -25,12 +25,12 @@ public class ModCreativeModeTabs {
 		() -> CreativeModeTab
 			.builder(CreativeModeTab.Row.TOP, 0)
 			.title(Component.translatable("itemGroup." + Leadlight.MOD_ID))
-			.icon(() -> new ItemStack(ModBlocks.LARGE_IRON_WINDOW_FRAME_BLOCK.get()))
+			.icon(() -> new ItemStack(ModBlocks.IRON_WINDOW_FRAMES.large().get()))
 			.build());
 
 	public static void addItems(Consumer<ItemLike> consumer) {
-		ModItems.ALL_CUT_STAINED_GLASS_PANE_ITEMS.get().forEach(consumer);
-		ModBlocks.ALL_FRAME_BLOCKS.get().forEach(consumer);
+		ModItems.CUT_STAINED_GLASS_PANES.map(Supplier::get).forEach(consumer::accept);
+		ModBlocks.IRON_WINDOW_FRAMES.map(Supplier::get).forEach(consumer::accept);
 	}
 
 	public static void initialize(){}

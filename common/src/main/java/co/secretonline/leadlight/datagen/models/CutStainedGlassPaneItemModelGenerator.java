@@ -7,6 +7,7 @@ import net.minecraft.client.data.models.model.*;
 import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class CutStainedGlassPaneItemModelGenerator {
 	private final ItemModelOutput itemModelOutput;
@@ -18,10 +19,11 @@ public class CutStainedGlassPaneItemModelGenerator {
 	}
 
 	public void generateItemModels() {
-		ModItems.ALL_CUT_STAINED_GLASS_PANE_ITEMS.get().forEach(this::createCutGlassPaneItem);
+		ModItems.CUT_STAINED_GLASS_PANES.forEach(this::createCutGlassPaneItem);
 	}
 
-	private void createCutGlassPaneItem(final CutStainedGlassPaneItem item) {
+	private void createCutGlassPaneItem(final Supplier<CutStainedGlassPaneItem> itemSupplier) {
+		CutStainedGlassPaneItem item = itemSupplier.get();
 		Identifier id = ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), this.modelOutput);
 		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(id));
 	}

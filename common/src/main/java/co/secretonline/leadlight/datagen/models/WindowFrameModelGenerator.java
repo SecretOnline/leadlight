@@ -1,21 +1,16 @@
 package co.secretonline.leadlight.datagen.models;
 
-import co.secretonline.leadlight.block.WindowFrameBlock;
 import co.secretonline.leadlight.block.ModBlocks;
+import co.secretonline.leadlight.block.WindowFrameBlock;
 import co.secretonline.leadlight.data.FrameShape;
 import co.secretonline.leadlight.data.models.ModTextureMappings;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class WindowFrameModelGenerator {
 	private final Consumer<BlockModelDefinitionGenerator> blockStateOutput;
@@ -29,7 +24,7 @@ public class WindowFrameModelGenerator {
 	}
 
 	public void generateBlockStateModels() {
-		ModBlocks.ALL_FRAME_BLOCKS.get().forEach(this::createWindowFrameBlock);
+		ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get().forEach(this::createWindowFrameBlock);
 	}
 
 	private void createWindowFrameBlock(final WindowFrameBlock block) {
