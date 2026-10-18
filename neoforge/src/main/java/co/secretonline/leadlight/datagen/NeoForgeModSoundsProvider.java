@@ -16,10 +16,10 @@ public class NeoForgeModSoundsProvider extends SoundDefinitionsProvider {
 	@Override
 	public void registerSounds() {
 		add(ModSounds.WINDOW_FRAME_ADD_PANE.get(), SoundDefinition.definition()
-			.with(sound(SoundEvents.ITEM_FRAME_PLACE.location()))
+			.with(sound(SoundEvents.ITEM_FRAME_PLACE.location(), SoundDefinition.SoundType.EVENT))
 			.subtitle("subtitles.block.window_frame.add_pane"));
 		add(ModSounds.WINDOW_FRAME_REMOVE_PANE.get(), SoundDefinition.definition()
-			.with(sound(SoundEvents.ITEM_FRAME_REMOVE_ITEM.location()))
+			.with(sound(SoundEvents.ITEM_FRAME_REMOVE_ITEM.location(), SoundDefinition.SoundType.EVENT))
 			.subtitle("subtitles.block.window_frame.remove_pane"));
 	}
 }
