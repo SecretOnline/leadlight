@@ -5,6 +5,7 @@ import co.secretonline.leadlight.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.references.BlockItemId;
 import net.minecraft.tags.BlockTags;
 import org.jspecify.annotations.NonNull;
 
@@ -18,8 +19,8 @@ public class FabricBlockTagProvider extends FabricTagsProvider.BlockTagsProvider
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
-		valueLookupBuilder(ModBlockTags.WINDOW_FRAME).addAll(ModBlocks.ALL_WINDOW_FRAME_BLOCKS.get().map(Function.identity()));
+		tag(ModBlockTags.WINDOW_FRAME).addAll(ModBlocks.ALL_WINDOW_FRAME_BLOCK_ITEM_IDS.map(BlockItemId::block));
 
-		valueLookupBuilder(BlockTags.BARS).addTag(ModBlockTags.WINDOW_FRAME);
+		tag(BlockTags.BARS).addTag(ModBlockTags.WINDOW_FRAME);
 	}
 }
