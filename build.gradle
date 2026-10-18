@@ -14,6 +14,7 @@ publishMods {
 	def cfOptions = curseforgeOptions {
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 		projectId = providers.gradleProperty("curseforge_project_id")
+		projectSlug = "leadlight"
 		minecraftVersions.add(providers.gradleProperty("minecraft_version"))
 		client = true
 		server = true
