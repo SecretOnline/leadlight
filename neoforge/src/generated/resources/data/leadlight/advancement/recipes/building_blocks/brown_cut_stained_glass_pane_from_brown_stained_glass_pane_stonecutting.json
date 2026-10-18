@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "leadlight:brown_cut_stained_glass_pane_from_brown_stained_glass_pane_stonecutting"
+        "recipes": "leadlight:brown_cut_stained_glass_pane_from_brown_stained_glass_pane_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

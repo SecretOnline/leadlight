@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "leadlight:vertical_iron_window_frame"
+        "recipes": "leadlight:vertical_iron_window_frame"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
