@@ -1,16 +1,15 @@
 package co.secretonline.leadlight.item;
 
 import co.secretonline.leadlight.Leadlight;
-import co.secretonline.leadlight.data.ColorCollection;
 import co.secretonline.leadlight.platform.ServerServiceLoader;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.ColorCollection;
 
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class ModItems {
 	public static final ColorCollection<ResourceKey<Item>> CUT_STAINED_GLASS_PANE_KEYS = createCutStainedGlassPaneKeys();

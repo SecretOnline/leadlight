@@ -19,6 +19,6 @@ public class NeoForgeItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.@NonNull Provider provider) {
-		tag(ModItemTags.CUT_STAINED_GLASS_PANE).addAll(ModItems.CUT_STAINED_GLASS_PANES.map(Supplier::get).map(Item::asItem).asList());
+		tag(ModItemTags.CUT_STAINED_GLASS_PANE).addAll(ModItems.CUT_STAINED_GLASS_PANE_KEYS.asList());
 	}
 }
