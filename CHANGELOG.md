@@ -16,6 +16,10 @@ The versioning scheme is listed in the README.
 
 ## Unreleased - DATE
 
+## v1.0.0 - 2026-10-18
+
+I've made a new mod! Leadlight adds Window Frames that can be filled with glass to make different patterns.
+
 ### Known Issues
 
 - Transparent blocks (like Water) are invisible when behind filled Window Frames when Improved Transparency is off.
